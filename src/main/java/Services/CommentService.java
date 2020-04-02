@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class CommentService {
+
     CommentRepository commentRepo;
 
     @Autowired
@@ -17,22 +18,34 @@ public class CommentService {
     }
 
     public Comment findById(Long commentId) {
-        return null;
+        return commentRepo.getOne(commentId);
     }
 
-    public List<Comment> findAll(Long blogId) {
-        return null;
+    public List<Comment> findAllByBlogId(Long blogId) {
+        return commentRepo.findAllByBlogId(blogId);
     }
 
     public Boolean saveComment(Comment comment) {
-        return null;
+        if(!commentRepo.existsById(comment.getCommentId())){
+            commentRepo.save(comment);
+            return true;
+        }
+        return false;
     }
 
     public Boolean updateComment(Comment comment) {
-        return null;
+        if(commentRepo.existsById(comment.getCommentId())){
+            commentRepo.save(comment);
+            return true;
+        }
+        return false;
     }
 
     public Boolean deleteComment(Comment comment) {
-        return null;
+        if(commentRepo.existsById(comment.getCommentId())){
+            commentRepo.delete(comment);
+            return true;
+        }
+        return false;
     }
 }

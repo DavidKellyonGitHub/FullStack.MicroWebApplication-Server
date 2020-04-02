@@ -28,7 +28,7 @@ public class CommentController {
 //    }
 
     @ResponseBody
-    public ResponseEntity<Iterable<Comment>> findAll() {
+    public ResponseEntity<Iterable<Comment>> findAllByBlogId() {
         return null;
     }
 

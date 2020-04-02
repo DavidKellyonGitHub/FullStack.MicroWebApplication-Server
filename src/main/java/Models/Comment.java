@@ -8,14 +8,14 @@ import java.time.LocalDate;
 public class Comment {
 
     private String comment;
-    private Integer commentId;
+    private Long commentId;
     private LocalDate dateCreated;
     private Integer thumbsUp;
     private Integer thumbsDown;
     @Id
     private Long blogId;
 
-    public Comment(String comment, Integer commentId, LocalDate dateCreated, Integer thumbsUp, Integer thumbsDown, Long blogId){
+    public Comment(String comment, Long commentId, LocalDate dateCreated, Integer thumbsUp, Integer thumbsDown, Long blogId){
         this.comment = comment;
         this.commentId = commentId;
         this.dateCreated = dateCreated;
@@ -34,11 +34,11 @@ public class Comment {
         this.comment = comment;
     }
 
-    public Integer getCommentId() {
+    public Long getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(Integer commentId) {
+    public void setCommentId(Long commentId) {
         this.commentId = commentId;
     }
 
