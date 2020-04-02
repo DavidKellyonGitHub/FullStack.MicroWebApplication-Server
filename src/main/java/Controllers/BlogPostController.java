@@ -5,9 +5,11 @@ import Services.BlogPostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class BlogPostController {
+
     BlogPostService blogPostService;
 
     @ResponseBody
