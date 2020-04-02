@@ -44,7 +44,4 @@ public class BlogPostController {
     public ResponseEntity<String> deleteAll(Integer postId){
         return null;
     }
-
-
-
 }

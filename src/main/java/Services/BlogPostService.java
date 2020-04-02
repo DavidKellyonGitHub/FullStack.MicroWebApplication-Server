@@ -21,20 +21,17 @@ public class BlogPostService {
         return null;
     }
 
-        public BlogPost findbyTag(String tag){
+    public BlogPost findbyTag(String tag){
         return null;
     }
-
 
     public BlogPost findAll(){
         return null;
     }
 
-
     public Boolean savePost(String tag){
         return null;
     }
-
 
     public Boolean update(Integer postId){
         return null;
