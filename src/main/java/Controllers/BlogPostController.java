@@ -6,6 +6,8 @@ import Services.BlogPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,8 +17,8 @@ public class BlogPostController {
     @Autowired
     BlogPostService blogPostService;
 
-    @ResponseBody
-    public ResponseEntity<?> findById(Long Id){
+    @GetMapping("/BlogPost/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long Id){
         return this.blogPostService.findById(Id)
                 .map(blogPost -> ResponseEntity.ok().body(blogPost))
                 .orElse(ResponseEntity.notFound().build());
