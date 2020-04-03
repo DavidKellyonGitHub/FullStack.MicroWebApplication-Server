@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class BlogPostController {
-
     BlogPostService blogPostService;
 
     @Autowired
@@ -53,4 +52,7 @@ public class BlogPostController {
     public ResponseEntity<?> deleteAll(Long id){
         return new ResponseEntity<>(blogPostService.delete(id),HttpStatus.OK);
     }
+
+
+
 }
