@@ -1,28 +1,33 @@
 package Models;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.HashSet;
 
 @Entity
 public class BlogPost {
-    private int blogId;
+    @Id
+    private Long blogId;
+
     private LocalDate dateCreated;
     private String body;
     private HashSet<String> blogTag;
 
-    public BlogPost(int blogId, LocalDate dateCreated, String body, HashSet<String> blogTag) {
+    public BlogPost(Long blogId, LocalDate dateCreated, String body, HashSet<String> blogTag) {
         this.blogId = blogId;
         this.dateCreated = dateCreated;
         this.body = body;
         this.blogTag = blogTag;
     }
 
-    public int getBlogId() {
+    public BlogPost(){};
+
+    public long getBlogId() {
         return blogId;
     }
 
-    public void setBlogId(int blogId) {
+    public void setBlogId(Long blogId) {
         this.blogId = blogId;
     }
 
