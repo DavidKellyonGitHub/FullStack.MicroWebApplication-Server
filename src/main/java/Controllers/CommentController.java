@@ -23,8 +23,8 @@ public class CommentController {
     }
 
     @GetMapping("/{commentId}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        return this.commentService.findById(id)
+    public ResponseEntity<?> findById(@PathVariable Long commentId) {
+        return this.commentService.findById(commentId)
                 .map(comment -> ResponseEntity.ok().body(comment))
                 .orElse(ResponseEntity.notFound().build());
     }
