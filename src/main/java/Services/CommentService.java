@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -17,35 +18,20 @@ public class CommentService {
         this.commentRepo = commentRepo;
     }
 
-    public Comment findById(Long commentId) {
-        return commentRepo.getOne(commentId);
+    public Optional<Comment> findById(Long commentId) {
+        return commentRepo.findById(commentId);
     }
 
     public List<Comment> findAllByBlogId(Long blogId) {
         return commentRepo.findAllByBlogId(blogId);
     }
 
-    public Boolean saveComment(Comment comment) {
-        if(!commentRepo.existsById(comment.getCommentId())){
-            commentRepo.save(comment);
-            return true;
-        }
-        return false;
+    public Comment saveComment(Comment comment) {
+        return commentRepo.save(comment);
     }
 
-    public Boolean updateComment(Comment comment) {
-        if(commentRepo.existsById(comment.getCommentId())){
-            commentRepo.save(comment);
-            return true;
-        }
-        return false;
-    }
-
-    public Boolean deleteComment(Comment comment) {
-        if(commentRepo.existsById(comment.getCommentId())){
-            commentRepo.delete(comment);
-            return true;
-        }
-        return false;
+    public Boolean deleteComment(Long commentId) {
+        commentRepo.deleteById(commentId);
+        return findById(commentId).isPresent();
     }
 }
