@@ -4,54 +4,53 @@ import Models.BlogPost;
 import Repositories.BlogPostRepository;
 import Services.BlogPostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class BlogPostController {
-
-    @Autowired
     BlogPostService blogPostService;
 
+    @Autowired
+    public BlogPostController(BlogPostService blogPostService){
+        this.blogPostService = blogPostService;
+    }
+
     @GetMapping("/BlogPost/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long Id){
-        return this.blogPostService.findById(Id)
-                .map(blogPost -> ResponseEntity.ok().body(blogPost))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return new ResponseEntity<>(blogPostService.findById(id), HttpStatus.OK);
     }
 
-    @ResponseBody
-    public ResponseEntity<BlogPost> findbyTag(String tag){
-        return null;
+    @GetMapping("/BlogPost/{tag}")
+    public ResponseEntity<?> findbyTag(@PathVariable String tag){
+        return new ResponseEntity<>(blogPostService.findByTag(tag),HttpStatus.OK);
     }
 
-    @ResponseBody
-    public ResponseEntity<BlogPost> findAll(){
-        return null;
+    @GetMapping("/BlogPost/all")
+    public ResponseEntity<?> findAll(){
+        return new ResponseEntity<>(blogPostService.findAll(),HttpStatus.OK);
     }
 
-    @ResponseBody
-    public ResponseEntity<String> savePost(String tag){
-        return null;
+    @PostMapping("/BlogPost/add/{tag}")
+    public ResponseEntity<?> savePost(@PathVariable String tag){
+        return new ResponseEntity<>(blogPostService.savePost(tag), HttpStatus.OK);
     }
 
-    @ResponseBody
-    public ResponseEntity<String> update(Integer postId){
-        return null;
+    @PutMapping("/BlogPost/add/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id){
+        return new ResponseEntity<>(blogPostService.update(id), HttpStatus.OK);
     }
 
-    @ResponseBody
-    public ResponseEntity<String> delete(Integer postId){
-        return null;
+    @DeleteMapping("/BlogPost/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        return new ResponseEntity<>(blogPostService.delete(id),HttpStatus.OK);
     }
 
-    @ResponseBody
-    public ResponseEntity<String> deleteAll(Integer postId){
-        return null;
+    @DeleteMapping("/BlogPost/deleteAll")
+    public ResponseEntity<?> deleteAll(Long id){
+        return new ResponseEntity<>(blogPostService.delete(id),HttpStatus.OK);
     }
 
 
