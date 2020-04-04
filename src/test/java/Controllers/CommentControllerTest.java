@@ -29,18 +29,4 @@ public class CommentControllerTest {
     @MockBean
     private CommentService service;
 
-    @Test
-    public void findByIdTest() throws Exception {
-        Long givenId = 1L;
-        String testComment = "I like this post!";
-        BDDMockito
-                .given(service.findById(givenId))
-                .willReturn(new Comment(givenId, testComment, LocalDate.now(), 0, 0, ));
-
-        String expectedContent = "{\"id\":null,\"firstName\":\"Leon\",\"lastName\":\"Hunter\"}";
-        this.mvc.perform(MockMvcRequestBuilders
-                .get("/people/" + givenId))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(expectedContent));
-    }
 }
