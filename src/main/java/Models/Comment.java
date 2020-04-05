@@ -1,27 +1,35 @@
 package Models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 public class Comment {
 
-    private String text;
-    private Long commentId;
-    private LocalDate dateCreated;
-    private Integer thumbsUp;
-    private Integer thumbsDown;
     @Id
-    private Long blogId;
+    @GeneratedValue
+    @Column(name="COMMENT_ID")
+    private Long commentId;
+    @Column(name="TEXT")
+    private String text;
+    @Column(name="DATE_CREATED")
+    private LocalDate dateCreated;
+    @Column(name="THUMBS_UP")
+    private Integer thumbsUp;
+    @Column(name="THUMBS_DOWN")
+    private Integer thumbsDown;
+    @ManyToOne
+    @JoinColumn(name="BLOG_ID")
+    private BlogPost blogPost;
 
-    public Comment(String text, Long commentId, LocalDate dateCreated, Integer thumbsUp, Integer thumbsDown, Long blogId){
+    public Comment(String text, Long commentId, LocalDate dateCreated,
+                   Integer thumbsUp, Integer thumbsDown, BlogPost blogPost){
         this.text = text;
         this.commentId = commentId;
         this.dateCreated = dateCreated;
         this.thumbsUp = thumbsUp;
         this.thumbsDown = thumbsDown;
-        this.blogId = blogId;
+        this.blogPost = blogPost;
     }
 
     public Comment(){}
@@ -66,11 +74,11 @@ public class Comment {
         this.thumbsDown = thumbsDown;
     }
 
-    public Long getBlogId() {
-        return blogId;
+    public BlogPost getBlogPost() {
+        return blogPost;
     }
 
-    public void setBlogId(Long blogId) {
-        this.blogId = blogId;
+    public void setBlogId(BlogPost blogPost) {
+        this.blogPost = blogPost;
     }
 }

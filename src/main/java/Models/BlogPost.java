@@ -9,7 +9,6 @@ import java.util.HashSet;
 public class BlogPost {
     @Id
     private Long blogId;
-
     private LocalDate dateCreated;
     private String body;
     private HashSet<String> blogTag;
