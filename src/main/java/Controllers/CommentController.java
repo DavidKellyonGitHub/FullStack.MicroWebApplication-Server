@@ -42,7 +42,7 @@ public class CommentController {
                     .created(new URI("/comment/" + newComment.getCommentId()))
                     .body(newComment);
         } catch (URISyntaxException e) {
-            return ResponseEntity.status(HttpStatus.MULTI_STATUS.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -59,7 +59,7 @@ public class CommentController {
                                 .location(new URI("/comment/" + c.getCommentId()))
                                 .body(c);
                     }catch(URISyntaxException e){
-                        return ResponseEntity.status(HttpStatus.MULTI_STATUS.INTERNAL_SERVER_ERROR).build();
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
                     }
                 }).orElse(ResponseEntity.notFound().build());
     }
