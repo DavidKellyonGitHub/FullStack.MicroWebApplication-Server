@@ -20,6 +20,8 @@ public class Comment {
     private String text;
     @Column(name="LIKES")
     private Integer likes;
+    @Column(name="BLOG_ID")
+    private Long blogId;
 
     public Long getCommentId() {
         return commentId;
@@ -67,5 +69,13 @@ public class Comment {
 
     public void setLikes(Integer likes) {
         this.likes = likes;
+    }
+
+    public Long getBlogId() {
+        return blogId;
+    }
+
+    public void setBlogId(Long blogId) {
+        this.blogId = blogId;
     }
 }
