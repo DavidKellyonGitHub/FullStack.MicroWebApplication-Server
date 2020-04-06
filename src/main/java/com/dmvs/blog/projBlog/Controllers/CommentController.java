@@ -1,7 +1,7 @@
-package Controllers;
+package com.dmvs.blog.projBlog.Controllers;
 
-import Models.Comment;
-import Services.CommentService;
+import com.dmvs.blog.projBlog.Models.Comment;
+import com.dmvs.blog.projBlog.Services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

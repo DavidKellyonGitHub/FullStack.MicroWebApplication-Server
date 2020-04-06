@@ -1,4 +1,4 @@
-package Models;
+package com.dmvs.blog.projBlog.Models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
