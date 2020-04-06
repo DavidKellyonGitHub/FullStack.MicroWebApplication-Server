@@ -1,28 +1,31 @@
 package com.dmvs.blog.projBlog.Models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.List;
 
 @Entity
 public class BlogPost {
+
     @Id
+    @GeneratedValue
+    @Column(name = "BLOG_ID")
     private Long blogId;
+    @Column(name = "DATE_CREATED")
     private LocalDate dateCreated;
+    @Column(name = "TITLE")
+    private String title;
+    @Column(name = "BODY")
     private String body;
-    private HashSet<String> blogTag;
+    @Column(name = "TAG")
+    private String tag;
+    @Column(name = "STATUS")
+    private String status;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "BLOG_ID")
+    private List<Comment> commentList;
 
-    public BlogPost(Long blogId, LocalDate dateCreated, String body, HashSet<String> blogTag) {
-        this.blogId = blogId;
-        this.dateCreated = dateCreated;
-        this.body = body;
-        this.blogTag = blogTag;
-    }
-
-    public BlogPost(){};
-
-    public long getBlogId() {
+    public Long getBlogId() {
         return blogId;
     }
 
@@ -38,6 +41,14 @@ public class BlogPost {
         this.dateCreated = dateCreated;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getBody() {
         return body;
     }
@@ -46,13 +57,27 @@ public class BlogPost {
         this.body = body;
     }
 
-    public HashSet<String> getBlogTag() {
-        return blogTag;
+    public String getTag() {
+        return tag;
     }
 
-    public void setBlogTag(HashSet<String> blogTag) {
-        this.blogTag = blogTag;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
-    ;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
 }

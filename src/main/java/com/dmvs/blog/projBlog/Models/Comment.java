@@ -10,37 +10,18 @@ public class Comment {
     @GeneratedValue
     @Column(name="COMMENT_ID")
     private Long commentId;
-    @Column(name="TEXT")
-    private String text;
     @Column(name="DATE_CREATED")
     private LocalDate dateCreated;
-    @Column(name="THUMBS_UP")
-    private Integer thumbsUp;
-    @Column(name="THUMBS_DOWN")
-    private Integer thumbsDown;
-    @ManyToOne
-    @JoinColumn(name="BLOG_ID")
-    private BlogPost blogPost;
-
-    public Comment(String text, Long commentId, LocalDate dateCreated,
-                   Integer thumbsUp, Integer thumbsDown, BlogPost blogPost){
-        this.text = text;
-        this.commentId = commentId;
-        this.dateCreated = dateCreated;
-        this.thumbsUp = thumbsUp;
-        this.thumbsDown = thumbsDown;
-        this.blogPost = blogPost;
-    }
-
-    public Comment(){}
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
+    @Column(name="AUTHOR")
+    private String user;
+    @Column(name="AUTHOR_EMAIL")
+    private String userEmail;
+    @Column(name="TEXT")
+    private String text;
+    @Column(name="LIKES")
+    private Integer likes;
+    @Column(name="BLOG_ID")
+    private Long blogId;
 
     public Long getCommentId() {
         return commentId;
@@ -58,27 +39,43 @@ public class Comment {
         this.dateCreated = dateCreated;
     }
 
-    public Integer getThumbsUp() {
-        return thumbsUp;
+    public String getUser() {
+        return user;
     }
 
-    public void setThumbsUp(Integer thumbsUp) {
-        this.thumbsUp = thumbsUp;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public Integer getThumbsDown() {
-        return thumbsDown;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setThumbsDown(Integer thumbsDown) {
-        this.thumbsDown = thumbsDown;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
-    public BlogPost getBlogPost() {
-        return blogPost;
+    public String getText() {
+        return text;
     }
 
-    public void setBlogId(BlogPost blogPost) {
-        this.blogPost = blogPost;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
+
+    public Long getBlogId() {
+        return blogId;
+    }
+
+    public void setBlogId(Long blogId) {
+        this.blogId = blogId;
     }
 }

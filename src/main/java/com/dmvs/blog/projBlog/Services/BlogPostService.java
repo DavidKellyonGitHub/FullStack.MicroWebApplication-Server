@@ -10,7 +10,8 @@ import java.util.List;
 
 @Service
 public class BlogPostService {
-    BlogPostRepository blogRepo;
+
+    private BlogPostRepository blogRepo;
 
     @Autowired
     public BlogPostService(BlogPostRepository repository) {
