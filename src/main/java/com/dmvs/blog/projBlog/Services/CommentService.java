@@ -1,7 +1,7 @@
-package Services;
+package com.dmvs.blog.projBlog.Services;
 
-import Models.Comment;
-import Repositories.CommentRepository;
+import com.dmvs.blog.projBlog.Models.Comment;
+import com.dmvs.blog.projBlog.Repositories.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,0 +1,82 @@
+package com.dmvs.blog.projBlog.Models;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
+
+@Entity
+public class BlogPost {
+    @Id
+    @GeneratedValue
+    @Column(name = "BLOG_ID")
+    private Long blogId;
+    @Column(name = "DATE_CREATED")
+    private LocalDate dateCreated;
+    @Column(name = "TITLE")
+    private String title;
+    @Column(name = "BODY")
+    private String body;
+    @Column(name = "TAG")
+    private String tag;
+    @Column(name = "STATUS")
+    private String status;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "BLOG_ID")
+    private List<Comment> commentList;
+
+    public Long getBlogId() {
+        return blogId;
+    }
+
+    public void setBlogId(Long blogId) {
+        this.blogId = blogId;
+    }
+
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+}

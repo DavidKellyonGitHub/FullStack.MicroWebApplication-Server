@@ -1,4 +1,4 @@
-package Models;
+package com.dmvs.blog.projBlog.Models;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,21 +1,12 @@
-package Services;
+package com.dmvs.blog.projBlog.Services;
 
-import Models.BlogPost;
-import Repositories.BlogPostRepository;
+import com.dmvs.blog.projBlog.Models.BlogPost;
+import com.dmvs.blog.projBlog.Repositories.BlogPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BlogPostService {
