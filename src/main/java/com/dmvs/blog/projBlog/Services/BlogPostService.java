@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class BlogPostService {
-    BlogPostRepository blogRepo;
+    private BlogPostRepository blogRepo;
 
     @Autowired
     public BlogPostService(BlogPostRepository repository) {
@@ -33,11 +33,9 @@ public class BlogPostService {
         return blogRepo.findByTag(tag);
     }
 
-
     public BlogPost savePost(String tag) {
         return blogRepo.save(new BlogPost());
     }
-
 
     public BlogPost update(Long id) {
         return blogRepo.save(new BlogPost());

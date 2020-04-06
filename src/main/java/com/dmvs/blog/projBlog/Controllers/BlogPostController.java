@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class BlogPostController {
-    BlogPostService blogPostService;
+    private BlogPostService blogPostService;
 
     @Autowired
     public BlogPostController(BlogPostService blogPostService){

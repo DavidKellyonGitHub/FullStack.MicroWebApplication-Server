@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequestMapping("/comment")
 public class CommentController {
 
-    CommentService commentService;
+    private CommentService commentService;
 
     @Autowired
     public CommentController(CommentService commentService) {
