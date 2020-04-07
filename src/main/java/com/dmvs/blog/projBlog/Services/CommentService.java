@@ -32,6 +32,6 @@ public class CommentService {
 
     public Boolean deleteComment(Long commentId) {
         commentRepo.deleteById(commentId);
-        return findById(commentId).isPresent();
+        return true;
     }
 }

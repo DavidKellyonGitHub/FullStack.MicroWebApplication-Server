@@ -8,19 +8,12 @@ public class Comment {
 
     @Id
     @GeneratedValue
-    @Column(name="COMMENT_ID")
     private Long commentId;
-    @Column(name="DATE_CREATED")
     private LocalDate dateCreated;
-    @Column(name="AUTHOR")
     private String user;
-    @Column(name="AUTHOR_EMAIL")
     private String userEmail;
-    @Column(name="TEXT")
     private String text;
-    @Column(name="LIKES")
     private Integer likes;
-    @Column(name="BLOG_ID")
     private Long blogId;
 
     public Long getCommentId() {

@@ -8,17 +8,11 @@ import java.util.List;
 public class BlogPost {
     @Id
     @GeneratedValue
-    @Column(name = "BLOG_ID")
     private Long blogId;
-    @Column(name = "DATE_CREATED")
     private LocalDate dateCreated;
-    @Column(name = "TITLE")
     private String title;
-    @Column(name = "BODY")
     private String body;
-    @Column(name = "TAG")
     private String tag;
-    @Column(name = "STATUS")
     private String status;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "BLOG_ID")

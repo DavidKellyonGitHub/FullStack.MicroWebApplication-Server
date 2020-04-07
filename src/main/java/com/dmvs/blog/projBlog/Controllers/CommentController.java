@@ -37,6 +37,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<Comment> saveComment(@RequestBody Comment comment) {
         Comment newComment = commentService.saveComment(comment);
+
         try {
             return ResponseEntity
                     .created(new URI("/comment/" + newComment.getCommentId()))

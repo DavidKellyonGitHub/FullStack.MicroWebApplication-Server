@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BlogPostService {
@@ -17,8 +18,8 @@ public class BlogPostService {
         this.blogRepo = repository;
     }
 
-    public BlogPost findById(Long id) {
-        return blogRepo.findById(id).get();
+    public Optional<BlogPost> findById(Long blogId) {
+        return blogRepo.findById(blogId);
     }
 
     public List<BlogPost> findAll(){
@@ -33,20 +34,16 @@ public class BlogPostService {
         return blogRepo.findByTag(tag);
     }
 
-    public BlogPost savePost(String tag) {
-        return blogRepo.save(new BlogPost());
+    public BlogPost savePost(BlogPost blogPost) {
+        return blogRepo.save(blogPost);
     }
 
-    public BlogPost update(Long id) {
-        return blogRepo.save(new BlogPost());
-    }
-
-    public Boolean delete(Long id) {
-        blogRepo.delete(blogRepo.findById(id).get());
+    public Boolean deletePost(Long blogId) {
+        blogRepo.deleteById(blogId);
         return true;
     }
 
-    public Boolean deleteAll(Long id) {
+    public Boolean deleteAll() {
         blogRepo.deleteAll();
         return true;
     }
