@@ -1,4 +1,4 @@
-package Services;
+package com.dmvs.blog.projBlog.Services;
 
 import org.junit.jupiter.api.Test;
 

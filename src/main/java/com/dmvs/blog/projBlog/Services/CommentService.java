@@ -1,7 +1,7 @@
-package Services;
+package com.dmvs.blog.projBlog.Services;
 
-import Models.Comment;
-import Repositories.CommentRepository;
+import com.dmvs.blog.projBlog.Models.Comment;
+import com.dmvs.blog.projBlog.Repositories.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class CommentService {
 
-    CommentRepository commentRepo;
+    private CommentRepository commentRepo;
 
     @Autowired
     public CommentService(CommentRepository commentRepo) {
@@ -32,6 +32,6 @@ public class CommentService {
 
     public Boolean deleteComment(Long commentId) {
         commentRepo.deleteById(commentId);
-        return findById(commentId).isPresent();
+        return true;
     }
 }
