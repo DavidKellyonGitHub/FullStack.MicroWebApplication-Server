@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(name = "/blogPost")
+@RequestMapping("/blogPost")
 public class BlogPostController {
+
     private BlogPostService blogPostService;
 
     @Autowired
@@ -30,17 +32,17 @@ public class BlogPostController {
     }
 
     @GetMapping("/{tag}")
-    public ResponseEntity<?> findByTag(@PathVariable String tag){
+    public ResponseEntity<List<BlogPost>> findByTag(@PathVariable String tag){
         return new ResponseEntity<>(blogPostService.findByTag(tag), HttpStatus.OK);
     }
 
     @GetMapping("/{date}")
-    public ResponseEntity<?> findByDate(@PathVariable LocalDate localDate){
+    public ResponseEntity<List<BlogPost>> findByDate(@PathVariable LocalDate localDate){
         return new ResponseEntity<>(blogPostService.findByDate(localDate), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> findAll(){
+    public ResponseEntity<List<BlogPost>> findAll(){
         return new ResponseEntity<>(blogPostService.findAll(), HttpStatus.OK);
     }
 
@@ -90,7 +92,7 @@ public class BlogPostController {
     }
 
     @DeleteMapping("/deleteAll")
-    public ResponseEntity<?> deleteAll(){
+    public ResponseEntity<Boolean> deleteAll(){
         return new ResponseEntity<>(blogPostService.deleteAll(), HttpStatus.OK);
     }
 }

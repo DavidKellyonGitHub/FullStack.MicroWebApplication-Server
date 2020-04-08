@@ -27,7 +27,7 @@ class CommentServiceTest {
         testComment.setLikes(10);
         testComment.setUsername("von");
         testComment.setUserEmail("von@gmail.com");
-//        testComment.setBlogId(1L);
+        testComment.setBlogId(1L);
     }
     @Test
     void findById() {

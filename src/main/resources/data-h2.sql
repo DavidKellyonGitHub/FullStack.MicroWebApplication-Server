@@ -1,10 +1,13 @@
-Insert into blogs (blog_id, blog_date, blog_title, blog_content, blog_tag, blog_status, blog_comment_count)
+Insert into blog_post (blog_id, date_created, title, body, tag, status)
 Values (103 ,date '2015-04-09' + time '13:45:03', 'SCENE III. A room in the palace.',
-        'ROSALIND and more text', 'Scene 3', 'posted',2);
+        'ROSALIND and more text', 'Scene 3', 'posted');
 
-Insert into comments (comment_ID, comment_blog_ID, comment_author, comment_author_email, comment_date, comment_content, comment_like_count)
-Values (1001 ,102,'Rosalind', 'rosalid@gmail.com',
-        date '2015-04-09' + time '13:45:03', 'I admire your writing sir.', 2);
-
-Insert into likes (like_type, like_comment_ID)
-Values ('LIKE', 1001);
+Insert into comment (comment_id, date_created, username, user_email, text, likes, blog_id)
+Values (1001 , date '2015-04-09' + time '13:45:03', 'Rosalind', 'rosalid@gmail.com',
+        'I admire your writing sir.', 1, 103);
+Insert into comment (comment_id, date_created, username, user_email, text, likes, blog_id)
+Values (1002 , date '2015-04-09' + time '13:45:03', 'Rosalind', 'rosalid@gmail.com',
+        'I admire your writing sir.', 100, 103);
+Insert into comment (comment_id, date_created, username, user_email, text, likes, blog_id)
+Values (1003 , date '2015-04-09' + time '13:45:03', 'Rosalind', 'rosalid@gmail.com',
+        'I admire your writing sir.', 10, 103);
