@@ -44,8 +44,8 @@ public class BlogPostController {
         return new ResponseEntity<>(blogPostService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/add/{id}")
-    public ResponseEntity<?> savePost(@PathVariable BlogPost blogPost){
+    @PostMapping("/add")
+    public ResponseEntity<?> savePost(@RequestBody BlogPost blogPost){
         BlogPost newBlogPost = blogPostService.savePost(blogPost);
 
         try {

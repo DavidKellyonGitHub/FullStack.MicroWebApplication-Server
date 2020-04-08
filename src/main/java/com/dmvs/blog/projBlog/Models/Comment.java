@@ -14,6 +14,7 @@ public class Comment {
     private String userEmail;
     private String text;
     private Integer likes;
+    @Column(name = "blog_id")
     private Long blogId;
 
     public Long getCommentId() {
