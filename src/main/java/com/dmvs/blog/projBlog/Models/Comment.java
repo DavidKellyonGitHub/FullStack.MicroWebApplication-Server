@@ -12,9 +12,9 @@ public class Comment {
     private Long commentId;
     @Column(name = "DATE_CREATED")
     private LocalDate dateCreated;
-    @Column(name = "USERNAME")
-    private String username;
-    @Column(name = "USER_EMAIL")
+    @Column(name = "AUTHOR")
+    private String user;
+    @Column(name = "AUTHOR_EMAIL")
     private String userEmail;
     @Column(name = "TEXT")
     private String text;
@@ -39,12 +39,12 @@ public class Comment {
         this.dateCreated = dateCreated;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUser() {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getUserEmail() {
