@@ -6,17 +6,23 @@ import java.util.List;
 
 @Entity
 public class BlogPost {
+
     @Id
     @GeneratedValue
-    @Column(name = "blog_id")
+    @Column(name = "BLOG_ID")
     private Long blogId;
+    @Column(name = "DATE_CREATED")
     private LocalDate dateCreated;
+    @Column(name = "TITLE")
     private String title;
+    @Column(name = "BODY")
     private String body;
+    @Column(name = "TAG")
     private String tag;
+    @Column(name = "STATUS")
     private String status;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "blog_id")
+    @JoinColumn(name = "BLOG_ID")
     private List<Comment> commentList;
 
     public Long getBlogId() {

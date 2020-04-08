@@ -8,13 +8,19 @@ public class Comment {
 
     @Id
     @GeneratedValue
+    @Column(name = "COMMENT_ID")
     private Long commentId;
+    @Column(name = "DATE_CREATED")
     private LocalDate dateCreated;
-    private String user;
+    @Column(name = "USERNAME")
+    private String username;
+    @Column(name = "USER_EMAIL")
     private String userEmail;
+    @Column(name = "TEXT")
     private String text;
+    @Column(name = "LIKES")
     private Integer likes;
-    @Column(name = "blog_id")
+    @Column(name = "BLOG_ID")
     private Long blogId;
 
     public Long getCommentId() {
@@ -33,12 +39,12 @@ public class Comment {
         this.dateCreated = dateCreated;
     }
 
-    public String getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getUserEmail() {

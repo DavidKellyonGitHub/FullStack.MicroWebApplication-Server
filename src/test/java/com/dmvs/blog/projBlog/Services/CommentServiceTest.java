@@ -25,9 +25,9 @@ class CommentServiceTest {
         testComment.setText("test");
         testComment.setDateCreated(LocalDate.now());
         testComment.setLikes(10);
-        testComment.setUser("von");
+        testComment.setUsername("von");
         testComment.setUserEmail("von@gmail.com");
-        testComment.setBlogId(1L);
+//        testComment.setBlogId(1L);
     }
     @Test
     void findById() {
