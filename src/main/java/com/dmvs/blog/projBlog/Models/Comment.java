@@ -2,12 +2,13 @@ package com.dmvs.blog.projBlog.Models;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class Comment {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COMMENT_ID")
     private Long commentId;
     @Column(name = "DATE_CREATED")
@@ -22,6 +23,28 @@ public class Comment {
     private Integer likes;
     @Column(name = "BLOG_ID")
     private Long blogId;
+
+    public Comment() {
+    }
+
+    public Comment(Long commentId, LocalDate dateCreated, String user, String userEmail, String text, Integer likes, Long blogId) {
+        this.commentId = commentId;
+        this.dateCreated = dateCreated;
+        this.user = user;
+        this.userEmail = userEmail;
+        this.text = text;
+        this.likes = likes;
+        this.blogId = blogId;
+    }
+
+    public Comment(LocalDate dateCreated, String user, String userEmail, String text, Integer likes, Long blogId) {
+        this.dateCreated = dateCreated;
+        this.user = user;
+        this.userEmail = userEmail;
+        this.text = text;
+        this.likes = likes;
+        this.blogId = blogId;
+    }
 
     public Long getCommentId() {
         return commentId;
@@ -77,5 +100,19 @@ public class Comment {
 
     public void setBlogId(Long blogId) {
         this.blogId = blogId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return Objects.equals(commentId, comment.commentId) &&
+                Objects.equals(dateCreated, comment.dateCreated) &&
+                Objects.equals(user, comment.user) &&
+                Objects.equals(userEmail, comment.userEmail) &&
+                Objects.equals(text, comment.text) &&
+                Objects.equals(likes, comment.likes) &&
+                Objects.equals(blogId, comment.blogId);
     }
 }

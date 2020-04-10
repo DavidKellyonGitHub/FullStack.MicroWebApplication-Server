@@ -24,19 +24,19 @@ public class BlogPostController {
         this.blogPostService = blogPostService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{blogId}")
     public ResponseEntity<?> findById(@PathVariable Long blogId) {
         return this.blogPostService.findById(blogId)
                 .map(blogPost -> ResponseEntity.ok().body(blogPost))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{tag}")
+    @GetMapping("/allByTag/{tag}")
     public ResponseEntity<List<BlogPost>> findByTag(@PathVariable String tag){
         return new ResponseEntity<>(blogPostService.findByTag(tag), HttpStatus.OK);
     }
 
-    @GetMapping("/{date}")
+    @GetMapping("/allByDate/{localDate}")
     public ResponseEntity<List<BlogPost>> findByDate(@PathVariable LocalDate localDate){
         return new ResponseEntity<>(blogPostService.findByDate(localDate), HttpStatus.OK);
     }
@@ -46,7 +46,7 @@ public class BlogPostController {
         return new ResponseEntity<>(blogPostService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/save")
     public ResponseEntity<?> savePost(@RequestBody BlogPost blogPost){
         BlogPost newBlogPost = blogPostService.savePost(blogPost);
 
@@ -59,7 +59,7 @@ public class BlogPostController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{blogId}")
     public ResponseEntity<?> update(@PathVariable Long blogId, @RequestBody BlogPost blogPost){
         Optional<BlogPost> existingBlogPost = blogPostService.findById(blogId);
 
@@ -79,7 +79,7 @@ public class BlogPostController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{blogId}")
     public ResponseEntity<?> delete(@PathVariable Long blogId){
         Optional<BlogPost> existingBlogPost = blogPostService.findById(blogId);
 

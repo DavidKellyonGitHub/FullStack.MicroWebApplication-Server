@@ -29,12 +29,12 @@ public class CommentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/all/{blogId}")
+    @GetMapping("/allByBlogId/{blogId}")
     public ResponseEntity<Iterable<Comment>> findAllByBlogId(@PathVariable Long blogId) {
         return new ResponseEntity<>(commentService.findAllByBlogId(blogId), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Comment> saveComment(@RequestBody Comment comment) {
         Comment newComment = commentService.saveComment(comment);
 
@@ -47,13 +47,18 @@ public class CommentController {
         }
     }
 
-    @PutMapping("/{commentId}")
+    @PutMapping("/update/{commentId}")
     public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestBody Comment newComment) {
         Optional<Comment> existingComment = commentService.findById(commentId);
 
         return existingComment
                 .map(c -> {
+                    c.setDateCreated(newComment.getDateCreated());
+                    c.setUser(newComment.getUser());
+                    c.setUserEmail(newComment.getUserEmail());
                     c.setText(newComment.getText());
+                    c.setLikes(newComment.getLikes());
+                    commentService.saveComment(c);
                     try{
                         return ResponseEntity
                                 .ok()
@@ -65,7 +70,7 @@ public class CommentController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{commentId}")
+    @DeleteMapping("/delete/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
         Optional<Comment> existingCar = commentService.findById(commentId);
 

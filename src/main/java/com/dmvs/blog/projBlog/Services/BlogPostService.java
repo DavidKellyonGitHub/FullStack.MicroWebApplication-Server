@@ -28,11 +28,11 @@ public class BlogPostService {
     }
 
     public List<BlogPost> findByDate(LocalDate date) {
-        return blogRepo.findByDate(date);
+        return blogRepo.findAllByDateCreated(date);
     }
 
     public List<BlogPost> findByTag(String tag) {
-        return blogRepo.findByTag(tag);
+        return blogRepo.findAllByTag(tag);
     }
 
     public BlogPost savePost(BlogPost blogPost) {
