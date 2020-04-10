@@ -30,8 +30,22 @@ public class CommentService {
         return commentRepo.save(comment);
     }
 
+    public Optional<Comment> updateComment(Long commentId, Comment comment){
+        Optional<Comment> current = findById(commentId);
+        if(current.isPresent()){
+            current.get().setDateCreated(comment.getDateCreated());
+            current.get().setText(comment.getText());
+            commentRepo.save(current.get());
+        }
+        return current;
+    }
+
     public Boolean deleteComment(Long commentId) {
-        commentRepo.deleteById(commentId);
-        return true;
+        if(findById(commentId).isPresent()) {
+            commentRepo.deleteById(commentId);
+            return true;
+        }
+        else
+            return false;
     }
 }

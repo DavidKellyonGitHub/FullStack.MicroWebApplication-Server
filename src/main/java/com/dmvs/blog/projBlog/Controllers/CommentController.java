@@ -49,21 +49,15 @@ public class CommentController {
 
     @PutMapping("/update/{commentId}")
     public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestBody Comment newComment) {
-        Optional<Comment> existingComment = commentService.findById(commentId);
+        Optional<Comment> updatedComment = commentService.updateComment(commentId, newComment);
 
-        return existingComment
-                .map(c -> {
-                    c.setDateCreated(newComment.getDateCreated());
-                    c.setUser(newComment.getUser());
-                    c.setUserEmail(newComment.getUserEmail());
-                    c.setText(newComment.getText());
-                    c.setLikes(newComment.getLikes());
-                    commentService.saveComment(c);
+        return updatedComment
+                .map(comment -> {
                     try{
                         return ResponseEntity
                                 .ok()
-                                .location(new URI("/comment/" + c.getCommentId()))
-                                .body(c);
+                                .location(new URI("/comment/" + comment.getCommentId()))
+                                .body(comment);
                     }catch(URISyntaxException e){
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
                     }
@@ -71,14 +65,10 @@ public class CommentController {
     }
 
     @DeleteMapping("/delete/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
-        Optional<Comment> existingCar = commentService.findById(commentId);
-
-        return existingCar
-                .map(c -> {
-                    commentService.deleteComment(c.getCommentId());
-                    return ResponseEntity.ok().build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Boolean> deleteComment(@PathVariable Long commentId) {
+        if(commentService.deleteComment(commentId))
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
     }
 }
