@@ -1,7 +1,7 @@
-package Controllers;
+package com.dmvs.blog.projBlog.Controllers;
 
-import Models.Comment;
-import Services.CommentService;
+import com.dmvs.blog.projBlog.Models.Comment;
+import com.dmvs.blog.projBlog.Services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequestMapping("/comment")
 public class CommentController {
 
-    CommentService commentService;
+    private CommentService commentService;
 
     @Autowired
     public CommentController(CommentService commentService) {
@@ -37,12 +37,13 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<Comment> saveComment(@RequestBody Comment comment) {
         Comment newComment = commentService.saveComment(comment);
+
         try {
             return ResponseEntity
                     .created(new URI("/comment/" + newComment.getCommentId()))
                     .body(newComment);
         } catch (URISyntaxException e) {
-            return ResponseEntity.status(HttpStatus.MULTI_STATUS.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -59,7 +60,7 @@ public class CommentController {
                                 .location(new URI("/comment/" + c.getCommentId()))
                                 .body(c);
                     }catch(URISyntaxException e){
-                        return ResponseEntity.status(HttpStatus.MULTI_STATUS.INTERNAL_SERVER_ERROR).build();
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
                     }
                 }).orElse(ResponseEntity.notFound().build());
     }

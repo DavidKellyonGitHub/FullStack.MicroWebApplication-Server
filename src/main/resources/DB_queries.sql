@@ -37,3 +37,4 @@ Values (1001 ,102,'Rosalind', 'rosalid@gmail.com',
 Insert into likes (like_type, like_comment_ID)
 Values ('LIKE', 1001);
 
+
