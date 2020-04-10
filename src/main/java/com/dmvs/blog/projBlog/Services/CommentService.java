@@ -31,13 +31,12 @@ public class CommentService {
     }
 
     public Optional<Comment> updateComment(Long commentId, Comment comment){
-        Optional<Comment> current = findById(commentId);
-        if(current.isPresent()){
-            current.get().setDateCreated(comment.getDateCreated());
-            current.get().setText(comment.getText());
-            commentRepo.save(current.get());
+        Optional<Comment> currentComment = findById(commentId);
+        if(currentComment.isPresent()){
+            currentComment.get().setText(comment.getText());
+            commentRepo.save(currentComment.get());
         }
-        return current;
+        return currentComment;
     }
 
     public Boolean deleteComment(Long commentId) {
@@ -45,7 +44,6 @@ public class CommentService {
             commentRepo.deleteById(commentId);
             return true;
         }
-        else
-            return false;
+        return false;
     }
 }
