@@ -40,7 +40,7 @@ public class CommentControllerTest {
 
     @Test
     @DisplayName("GET /comment/1 - Found")
-    void testFindByIdFound() throws Exception {
+    public void testFindByIdFound() throws Exception {
         Long givenId = 1L;
         Comment getComment = new Comment(1L, LocalDate.of(2015, 4, 9),
                 "Rosalind", "rosalid@gmail.com",
@@ -63,7 +63,7 @@ public class CommentControllerTest {
 
     @Test
     @DisplayName("GET /comment/1 - Not Found")
-    void testFindByIdNotFound() throws Exception {
+    public void testFindByIdNotFound() throws Exception {
         given(commentService.findById(1L)).willReturn(Optional.empty());
 
         mockMvc.perform(get("/comment/{commentId}", 1L))
@@ -72,8 +72,8 @@ public class CommentControllerTest {
     }
 
     @Test
-    @DisplayName("GET /comment/allByBlogId/1 - Success")
-    void testFindAllByBlogId() throws Exception {
+    @DisplayName("GET /comment/allByBlogId/1 - Found")
+    public void testFindAllByBlogId() throws Exception {
         Long givenBlogId = 1L;
         Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
                 "Rosalind", "rosalid@gmail.com",
@@ -109,7 +109,7 @@ public class CommentControllerTest {
 
     @Test
     @DisplayName("POST /comment - Success")
-    void testSaveCommentSuccess() throws Exception {
+    public void testSaveCommentSuccess() throws Exception {
         Comment postComment = new Comment(LocalDate.of(2015, 4, 9),
                 "Rosalind", "rosalid@gmail.com",
                 "I admire your writing sir.", 1, 1L);
@@ -117,6 +117,7 @@ public class CommentControllerTest {
                 "Rosalind", "rosalid@gmail.com",
                 "I admire your writing sir.", 1, 1L);
         given(commentService.saveComment(postComment)).willReturn(mockComment);
+
         mockMvc.perform(post("/comment/save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postComment)))
@@ -133,30 +134,36 @@ public class CommentControllerTest {
                 .andExpect(jsonPath("$.text", is("I admire your writing sir.")))
                 .andExpect(jsonPath("$.likes", is(1)))
                 .andExpect(jsonPath("$.blogId", is(1)));
-
     }
 
-    @Test
-    @DisplayName("POST /comment - URISyntaxException")
-    void testSaveCommentError() throws Exception {
-    }
+//    @Test
+//    @DisplayName("POST /comment - URISyntaxException")
+//    public void testSaveCommentError() throws Exception {
+//        Comment postComment = new Comment( LocalDate.of(2015, 4, 9),
+//                "Rosalind", "rosalid@gmail.com",
+//                "I admire your writing sir.", 1, 1L);
+//        given(commentService.saveComment(postComment)).willReturn(postComment);
+//
+//        mockMvc.perform(post("/comment/save")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(postComment)))
+//
+//                .andExpect(status().isInternalServerError());
+//    }
 
     @Test
     @DisplayName("PUT /comment/1 - Success")
-    void testUpdateCommentSuccess() throws Exception {
+    public void testUpdateCommentSuccess() throws Exception {
         Long givenId = 1L;
-        Comment putComment = new Comment(LocalDate.of(2015, 4, 9),
-                "changed", "change@gmail.com",
-                "I admire your change sir.", 10, 1L);
         Comment mockComment = new Comment(givenId, LocalDate.of(2015, 4, 9),
                 "changed", "change@gmail.com",
                 "I admire your change sir.", 10, 1L);
-        given(commentService.updateComment(givenId, putComment)).willReturn(Optional.of(mockComment));
+        String changedText = "I admire your change sir.";
+        given(commentService.updateComment(givenId, changedText)).willReturn(Optional.of(mockComment));
 
         mockMvc.perform(put("/comment/update/{commentId}", givenId)
-                .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.IF_MATCH, 1)
-                .content(asJsonString(putComment)))
+                .param("newText", changedText))
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -172,26 +179,23 @@ public class CommentControllerTest {
 
     @Test
     @DisplayName("PUT /comment/1 - Not Found")
-    void testUpdateCommentNotFound() throws Exception {
+    public void testUpdateCommentNotFound() throws Exception {
         Long givenId = 1L;
-        Comment putComment = new Comment(givenId, LocalDate.of(2015, 4, 9),
-                "changed", "change@gmail.com",
-                "I admire your change sir.", 10, 1L);
-        given(commentService.updateComment(givenId, putComment)).willReturn(Optional.empty());
+        String changedText = "I admire your change sir.";
+        given(commentService.updateComment(givenId, changedText)).willReturn(Optional.empty());
 
         mockMvc.perform(put("/comment/update/{commentId}", givenId)
-                .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.IF_MATCH, 1)
-                .content(asJsonString(putComment)))
+                .param("newText", changedText))
 
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("DELETE /comment/delete/1 - Success")
-    void testDeleteCommentSuccess() throws Exception {
+    public void testDeleteCommentSuccess() throws Exception {
         Long givenId = 1L;
-        given(commentService.deleteComment(givenId)).willReturn(true);
+        given(commentService.deleteCommentById(givenId)).willReturn(true);
 
         mockMvc.perform(delete("/comment/delete/{commentId}", givenId))
 
@@ -200,16 +204,16 @@ public class CommentControllerTest {
 
     @Test
     @DisplayName("DELETE /comment/delete/1 - Not Found")
-    void testDeleteCommentNotFound() throws Exception {
+    public void testDeleteCommentNotFound() throws Exception {
         Long givenId = 1L;
-        given(commentService.deleteComment(givenId)).willReturn(false);
+        given(commentService.deleteCommentById(givenId)).willReturn(false);
 
         mockMvc.perform(delete("/comment/delete/{commentId}", givenId))
 
                 .andExpect(status().isNotFound());
     }
 
-    static String asJsonString(final Comment obj) {
+    public static String asJsonString(final Comment obj) {
         try {
             StringBuilder jsonString = new StringBuilder("{");
             jsonString.append("\"commentId\":"+obj.getCommentId()+",")
