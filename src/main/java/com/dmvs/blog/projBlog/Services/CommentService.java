@@ -22,6 +22,8 @@ public class CommentService {
         return commentRepo.findById(commentId);
     }
 
+    // TODO: "Implement findAllCommentsByUser"
+
     public List<Comment> findAllByBlogId(Long blogId) {
         return commentRepo.findAllByBlogId(blogId);
     }
@@ -30,22 +32,21 @@ public class CommentService {
         return commentRepo.save(comment);
     }
 
-    public Optional<Comment> updateComment(Long commentId, Comment comment){
-        Optional<Comment> current = findById(commentId);
-        if(current.isPresent()){
-            current.get().setDateCreated(comment.getDateCreated());
-            current.get().setText(comment.getText());
-            commentRepo.save(current.get());
+    public Optional<Comment> updateComment(Long commentId, String newText){
+        Optional<Comment> currentComment = findById(commentId);
+        if(currentComment.isPresent()){
+            currentComment.get().setText(newText);
+            commentRepo.save(currentComment.get());
         }
-        return current;
+        return currentComment;
     }
 
-    public Boolean deleteComment(Long commentId) {
-        if(findById(commentId).isPresent()) {
+    public Boolean deleteCommentById(Long commentId) {
+        Optional<Comment> currentComment = findById(commentId);
+        if(currentComment.isPresent()) {
             commentRepo.deleteById(commentId);
             return true;
         }
-        else
-            return false;
+        return false;
     }
 }

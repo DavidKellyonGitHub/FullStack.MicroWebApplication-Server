@@ -60,19 +60,16 @@ public class BlogPostController {
     }
 
     @PutMapping("/update/{blogId}")
-    public ResponseEntity<?> update(@PathVariable Long blogId, @RequestBody BlogPost blogPost){
-        Optional<BlogPost> existingBlogPost = blogPostService.findById(blogId);
+    public ResponseEntity<?> updatePost(@PathVariable Long blogId, @RequestBody BlogPost newBlogPost){
+        Optional<BlogPost> updatedBlogPost = blogPostService.updatePost(blogId, newBlogPost);
 
-        return existingBlogPost
-                .map(c -> {
-                    c.setBody(blogPost.getBody());
-                    c.setTag(blogPost.getTag());
-                    c.setTitle(blogPost.getTitle());
+        return updatedBlogPost
+                .map(blogPost -> {
                     try{
                         return ResponseEntity
                                 .ok()
-                                .location(new URI("/comment/" + c.getBlogId()))
-                                .body(c);
+                                .location(new URI("/comment/" + blogPost.getBlogId()))
+                                .body(blogPost);
                     }catch(URISyntaxException e){
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
                     }
@@ -80,15 +77,11 @@ public class BlogPostController {
     }
 
     @DeleteMapping("/delete/{blogId}")
-    public ResponseEntity<?> delete(@PathVariable Long blogId){
-        Optional<BlogPost> existingBlogPost = blogPostService.findById(blogId);
-
-        return existingBlogPost
-                .map(c -> {
-                    blogPostService.deletePost(c.getBlogId());
-                    return ResponseEntity.ok().build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Boolean> delete(@PathVariable Long blogId){
+        if(blogPostService.deletePost(blogId))
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/deleteAll")
