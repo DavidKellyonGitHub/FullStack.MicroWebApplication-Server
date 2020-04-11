@@ -29,12 +29,12 @@ public class CommentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/all/{blogId}")
+    @GetMapping("/allByBlogId/{blogId}")
     public ResponseEntity<Iterable<Comment>> findAllByBlogId(@PathVariable Long blogId) {
         return new ResponseEntity<>(commentService.findAllByBlogId(blogId), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Comment> saveComment(@RequestBody Comment comment) {
         Comment newComment = commentService.saveComment(comment);
 
@@ -47,33 +47,28 @@ public class CommentController {
         }
     }
 
-    @PutMapping("/{commentId}")
-    public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestBody Comment newComment) {
-        Optional<Comment> existingComment = commentService.findById(commentId);
+    @PutMapping("/update/{commentId}")
+    public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestParam String newText) {
+        Optional<Comment> updatedComment = commentService.updateComment(commentId, newText);
 
-        return existingComment
-                .map(c -> {
-                    c.setText(newComment.getText());
+        return updatedComment
+                .map(comment -> {
                     try{
                         return ResponseEntity
                                 .ok()
-                                .location(new URI("/comment/" + c.getCommentId()))
-                                .body(c);
+                                .location(new URI("/comment/" + comment.getCommentId()))
+                                .body(comment);
                     }catch(URISyntaxException e){
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
                     }
                 }).orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
-        Optional<Comment> existingCar = commentService.findById(commentId);
-
-        return existingCar
-                .map(c -> {
-                    commentService.deleteComment(c.getCommentId());
-                    return ResponseEntity.ok().build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+    @DeleteMapping("/delete/{commentId}")
+    public ResponseEntity<Boolean> deleteComment(@PathVariable Long commentId) {
+        if(commentService.deleteCommentById(commentId))
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
     }
 }
