@@ -24,19 +24,19 @@ public class BlogPostController {
         this.blogPostService = blogPostService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{blogId}")
     public ResponseEntity<?> findById(@PathVariable Long blogId) {
         return this.blogPostService.findById(blogId)
                 .map(blogPost -> ResponseEntity.ok().body(blogPost))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{tag}")
+    @GetMapping("/allByTag/{tag}")
     public ResponseEntity<List<BlogPost>> findByTag(@PathVariable String tag){
         return new ResponseEntity<>(blogPostService.findByTag(tag), HttpStatus.OK);
     }
 
-    @GetMapping("/{date}")
+    @GetMapping("/allByDate/{localDate}")
     public ResponseEntity<List<BlogPost>> findByDate(@PathVariable LocalDate localDate){
         return new ResponseEntity<>(blogPostService.findByDate(localDate), HttpStatus.OK);
     }
@@ -46,7 +46,7 @@ public class BlogPostController {
         return new ResponseEntity<>(blogPostService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/save")
     public ResponseEntity<?> savePost(@RequestBody BlogPost blogPost){
         BlogPost newBlogPost = blogPostService.savePost(blogPost);
 
@@ -59,36 +59,29 @@ public class BlogPostController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable Long blogId, @RequestBody BlogPost blogPost){
-        Optional<BlogPost> existingBlogPost = blogPostService.findById(blogId);
+    @PutMapping("/update/{blogId}")
+    public ResponseEntity<?> updatePost(@PathVariable Long blogId, @RequestBody BlogPost newBlogPost){
+        Optional<BlogPost> updatedBlogPost = blogPostService.updatePost(blogId, newBlogPost);
 
-        return existingBlogPost
-                .map(c -> {
-                    c.setBody(blogPost.getBody());
-                    c.setTag(blogPost.getTag());
-                    c.setTitle(blogPost.getTitle());
+        return updatedBlogPost
+                .map(blogPost -> {
                     try{
                         return ResponseEntity
                                 .ok()
-                                .location(new URI("/comment/" + c.getBlogId()))
-                                .body(c);
+                                .location(new URI("/comment/" + blogPost.getBlogId()))
+                                .body(blogPost);
                     }catch(URISyntaxException e){
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
                     }
                 }).orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long blogId){
-        Optional<BlogPost> existingBlogPost = blogPostService.findById(blogId);
-
-        return existingBlogPost
-                .map(c -> {
-                    blogPostService.deletePost(c.getBlogId());
-                    return ResponseEntity.ok().build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+    @DeleteMapping("/delete/{blogId}")
+    public ResponseEntity<Boolean> delete(@PathVariable Long blogId){
+        if(blogPostService.deletePost(blogId))
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/deleteAll")
