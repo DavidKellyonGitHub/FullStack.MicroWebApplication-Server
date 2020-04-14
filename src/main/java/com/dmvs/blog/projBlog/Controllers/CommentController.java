@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/zcwApp/comment")
 public class CommentController {
 
     private CommentService commentService;
@@ -40,7 +40,7 @@ public class CommentController {
 
         try {
             return ResponseEntity
-                    .created(new URI("/comment/" + newComment.getCommentId()))
+                    .created(new URI("/zcwApp/comment/" + newComment.getCommentId()))
                     .body(newComment);
         } catch (URISyntaxException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -56,7 +56,7 @@ public class CommentController {
                     try{
                         return ResponseEntity
                                 .ok()
-                                .location(new URI("/comment/" + comment.getCommentId()))
+                                .location(new URI("/zcwApp/comment/" + comment.getCommentId()))
                                 .body(comment);
                     }catch(URISyntaxException e){
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

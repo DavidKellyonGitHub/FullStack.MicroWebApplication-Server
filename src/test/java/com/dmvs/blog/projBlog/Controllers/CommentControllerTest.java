@@ -47,7 +47,7 @@ public class CommentControllerTest {
                 "I admire your writing sir.", 1, 1L);
         given(commentService.findById(givenId)).willReturn(Optional.of(getComment));
 
-        mockMvc.perform(get("/comment/{commentId}", givenId))
+        mockMvc.perform(get("/zcwApp/comment/{commentId}", givenId))
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -66,7 +66,7 @@ public class CommentControllerTest {
     public void testFindByIdNotFound() throws Exception {
         given(commentService.findById(1L)).willReturn(Optional.empty());
 
-        mockMvc.perform(get("/comment/{commentId}", 1L))
+        mockMvc.perform(get("/zcwApp/comment/{commentId}", 1L))
 
                 .andExpect(status().isNotFound());
     }
@@ -84,7 +84,7 @@ public class CommentControllerTest {
         List<Comment> commentList = new ArrayList<>(Arrays.asList(comment1, comment2));
         given(commentService.findAllByBlogId(1L)).willReturn(commentList);
 
-        mockMvc.perform(get("/comment/allByBlogId/{blogId}", givenBlogId))
+        mockMvc.perform(get("/zcwApp/comment/allByBlogId/{blogId}", givenBlogId))
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -118,7 +118,7 @@ public class CommentControllerTest {
                 "I admire your writing sir.", 1, 1L);
         given(commentService.saveComment(postComment)).willReturn(mockComment);
 
-        mockMvc.perform(post("/comment/save")
+        mockMvc.perform(post("/zcwApp/comment/save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postComment)))
 
@@ -161,7 +161,7 @@ public class CommentControllerTest {
         String changedText = "I admire your change sir.";
         given(commentService.updateComment(givenId, changedText)).willReturn(Optional.of(mockComment));
 
-        mockMvc.perform(put("/comment/update/{commentId}", givenId)
+        mockMvc.perform(put("/zcwApp/comment/update/{commentId}", givenId)
                 .header(HttpHeaders.IF_MATCH, 1)
                 .param("newText", changedText))
 
@@ -184,7 +184,7 @@ public class CommentControllerTest {
         String changedText = "I admire your change sir.";
         given(commentService.updateComment(givenId, changedText)).willReturn(Optional.empty());
 
-        mockMvc.perform(put("/comment/update/{commentId}", givenId)
+        mockMvc.perform(put("/zcwApp/comment/update/{commentId}", givenId)
                 .header(HttpHeaders.IF_MATCH, 1)
                 .param("newText", changedText))
 
@@ -197,7 +197,7 @@ public class CommentControllerTest {
         Long givenId = 1L;
         given(commentService.deleteCommentById(givenId)).willReturn(true);
 
-        mockMvc.perform(delete("/comment/delete/{commentId}", givenId))
+        mockMvc.perform(delete("/zcwApp/comment/delete/{commentId}", givenId))
 
                 .andExpect(status().isOk());
     }
@@ -208,7 +208,7 @@ public class CommentControllerTest {
         Long givenId = 1L;
         given(commentService.deleteCommentById(givenId)).willReturn(false);
 
-        mockMvc.perform(delete("/comment/delete/{commentId}", givenId))
+        mockMvc.perform(delete("/zcwApp/comment/delete/{commentId}", givenId))
 
                 .andExpect(status().isNotFound());
     }

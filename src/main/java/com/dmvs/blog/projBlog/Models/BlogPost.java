@@ -1,5 +1,7 @@
 package com.dmvs.blog.projBlog.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,8 +23,9 @@ public class BlogPost {
     private String tag;
     @Column(name = "STATUS")
     private String status;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "BLOG_ID")
+    @JsonIgnore
     private List<Comment> commentList;
 
     public BlogPost() {

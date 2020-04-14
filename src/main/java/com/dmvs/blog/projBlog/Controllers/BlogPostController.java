@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/blogPost")
+@RequestMapping("/zcwApp/blogPost")
 public class BlogPostController {
 
     private BlogPostService blogPostService;
@@ -36,8 +36,9 @@ public class BlogPostController {
         return new ResponseEntity<>(blogPostService.findByTag(tag), HttpStatus.OK);
     }
 
-    @GetMapping("/allByDate/{localDate}")
-    public ResponseEntity<List<BlogPost>> findByDate(@PathVariable LocalDate localDate){
+    @GetMapping("/allByDate/")
+    public ResponseEntity<List<BlogPost>> findByDate(@RequestParam String year,@RequestParam String month,@RequestParam String day){
+        LocalDate localDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
         return new ResponseEntity<>(blogPostService.findByDate(localDate), HttpStatus.OK);
     }
 
@@ -52,7 +53,7 @@ public class BlogPostController {
 
         try {
             return ResponseEntity
-                    .created(new URI("/blogPost/" + newBlogPost.getBlogId()))
+                    .created(new URI("/zcwApp/blogPost/" + newBlogPost.getBlogId()))
                     .body(newBlogPost);
         } catch (URISyntaxException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -68,7 +69,7 @@ public class BlogPostController {
                     try{
                         return ResponseEntity
                                 .ok()
-                                .location(new URI("/comment/" + blogPost.getBlogId()))
+                                .location(new URI("/zcwApp/blogPost/" + blogPost.getBlogId()))
                                 .body(blogPost);
                     }catch(URISyntaxException e){
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
