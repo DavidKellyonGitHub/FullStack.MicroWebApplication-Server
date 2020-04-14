@@ -53,7 +53,7 @@ public class BlogPostController {
 
         try {
             return ResponseEntity
-                    .created(new URI("/blogPost/" + newBlogPost.getBlogId()))
+                    .created(new URI("/zcwApp/blogPost/" + newBlogPost.getBlogId()))
                     .body(newBlogPost);
         } catch (URISyntaxException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -69,7 +69,7 @@ public class BlogPostController {
                     try{
                         return ResponseEntity
                                 .ok()
-                                .location(new URI("/comment/" + blogPost.getBlogId()))
+                                .location(new URI("/zcwApp/blogPost/" + blogPost.getBlogId()))
                                 .body(blogPost);
                     }catch(URISyntaxException e){
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
