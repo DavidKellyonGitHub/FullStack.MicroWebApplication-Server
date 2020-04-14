@@ -1,0 +1,87 @@
+# BLOGPOST MANAGEMENT
+
+GET {{host-url}}/blogPost/all
+
+###
+
+GET {{host-url}}/blogPost/1
+
+###
+
+GET {{host-url}}/blogPost/allByTag/test
+
+###
+
+GET {{host-url}}/blogPost/allByDate/?year=2020&month=1&day=1
+
+###
+
+POST {{host-url}}/blogPost/save
+Content-Type: application/json
+
+{
+  "dateCreated": "2020-01-01",
+  "title": "testTitle",
+  "body": "testBody",
+  "tag": "test",
+  "status": "posted",
+  "commentList": []
+}
+
+###
+
+PUT {{host-url}}/blogPost/update/1
+Content-Type: application/json
+
+{
+  "title": "testTitle",
+  "body": "testBody",
+  "tag": "test",
+  "status": "posted"
+}
+
+###
+
+DELETE {{host-url}}/blogPost/delete/2
+
+###
+
+DELETE {{host-url}}/blogPost/deleteAll
+
+###
+
+
+
+
+
+# COMMENT MANAGEMENT
+
+GET {{host-url}}/comment/allByBlogId/1
+
+###
+
+GET {{host-url}}/comment/1
+
+###
+
+POST {{host-url}}/comment/save
+Content-Type: application/json
+
+{
+  "dateCreated": "2015-04-09",
+  "user": "Rosalind",
+  "userEmail": "rosalid@gmail.com",
+  "text": "I admire your writing sir.",
+  "likes": 100,
+  "blogId": 2
+}
+
+###
+
+PUT {{host-url}}/comment/update/1?newText=I admire your change sir.
+
+###
+
+DELETE {{host-url}}/comment/delete/1
+
+###

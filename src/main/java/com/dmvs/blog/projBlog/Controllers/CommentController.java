@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/zcwApp/comment")
 public class CommentController {
 
     private CommentService commentService;
