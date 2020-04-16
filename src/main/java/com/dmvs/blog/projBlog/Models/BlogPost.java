@@ -17,7 +17,7 @@ public class BlogPost {
     private LocalDate dateCreated;
     @Column(name = "TITLE")
     private String title;
-    @Column(name = "BODY")
+    @Column(name = "BODY", length = 6500)
     private String body;
     @Column(name = "TAG")
     private String tag;
