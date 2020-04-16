@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/zcwApp/comment")
+@CrossOrigin
 public class CommentController {
 
     private CommentService commentService;

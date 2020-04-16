@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/zcwApp/blogPost")
+@CrossOrigin
 public class BlogPostController {
 
     private BlogPostService blogPostService;
