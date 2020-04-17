@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class BlogPost {
@@ -108,5 +109,19 @@ public class BlogPost {
 
     public void setCommentList(List<Comment> commentList) {
         this.commentList = commentList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BlogPost blogPost = (BlogPost) o;
+        return Objects.equals(blogId, blogPost.blogId) &&
+                Objects.equals(dateCreated, blogPost.dateCreated) &&
+                Objects.equals(username, blogPost.username) &&
+                Objects.equals(title, blogPost.title) &&
+                Objects.equals(body, blogPost.body) &&
+                Objects.equals(tag, blogPost.tag) &&
+                Objects.equals(status, blogPost.status);
     }
 }

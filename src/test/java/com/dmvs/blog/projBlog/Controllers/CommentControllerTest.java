@@ -43,8 +43,7 @@ public class CommentControllerTest {
     public void testFindByIdFound() throws Exception {
         Long givenId = 1L;
         Comment getComment = new Comment(1L, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, 1L);
+                "Rosalind", "I admire your writing sir.", 1, 1L);
         given(commentService.findById(givenId)).willReturn(Optional.of(getComment));
 
         mockMvc.perform(get("/zcwApp/comment/{commentId}", givenId))
@@ -76,11 +75,9 @@ public class CommentControllerTest {
     public void testFindAllByBlogId() throws Exception {
         Long givenBlogId = 1L;
         Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, givenBlogId);
+                "Rosalind", "I admire your writing sir.", 1, givenBlogId);
         Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
-                "changed", "changed@gmail.com",
-                "I admire your change sir.", 10, givenBlogId);
+                "changed", "I admire your change sir.", 10, givenBlogId);
         List<Comment> commentList = new ArrayList<>(Arrays.asList(comment1, comment2));
         given(commentService.findAllByBlogId(1L)).willReturn(commentList);
 
@@ -111,11 +108,9 @@ public class CommentControllerTest {
     @DisplayName("POST /comment - Success")
     public void testSaveCommentSuccess() throws Exception {
         Comment postComment = new Comment(LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, 1L);
+                "Rosalind", "I admire your writing sir.", 1, 1L);
         Comment mockComment = new Comment(1L, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, 1L);
+                "Rosalind", "I admire your writing sir.", 1, 1L);
         given(commentService.saveComment(postComment)).willReturn(mockComment);
 
         mockMvc.perform(post("/zcwApp/comment/save")
@@ -156,8 +151,7 @@ public class CommentControllerTest {
     public void testUpdateCommentSuccess() throws Exception {
         Long givenId = 1L;
         Comment mockComment = new Comment(givenId, LocalDate.of(2015, 4, 9),
-                "changed", "change@gmail.com",
-                "I admire your change sir.", 10, 1L);
+                "changed", "I admire your change sir.", 10, 1L);
         String changedText = "I admire your change sir.";
         given(commentService.updateComment(givenId, changedText)).willReturn(Optional.of(mockComment));
 
@@ -219,7 +213,6 @@ public class CommentControllerTest {
             jsonString.append("\"commentId\":"+obj.getCommentId()+",")
                     .append("\"dateCreated\":\""+obj.getDateCreated()+"\",")
                     .append("\"username\":\""+obj.getUsername()+"\",")
-                    .append("\"userEmail\":\""+obj.getUserEmail()+"\",")
                     .append("\"text\":\""+obj.getText()+"\",")
                     .append("\"likes\":"+obj.getLikes()+",")
                     .append("\"blogId\":"+obj.getBlogId()+"}");

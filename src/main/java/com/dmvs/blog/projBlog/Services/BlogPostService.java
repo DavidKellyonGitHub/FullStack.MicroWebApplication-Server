@@ -27,8 +27,8 @@ public class BlogPostService {
         return blogRepo.findAllByTag(tag);
     }
 
-    public List<BlogPost> findByDate(LocalDate date) {
-        return blogRepo.findAllByDateCreated(date);
+    public List<BlogPost> findAllByDateCreateAfter(LocalDate date) {
+        return blogRepo.findAllByDateCreatedAfter(date);
     }
 
     public List<BlogPost> findAll(){

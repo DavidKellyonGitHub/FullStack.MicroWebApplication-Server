@@ -46,12 +46,12 @@ public class DbSeeder implements CommandLineRunner {
         this.blogPostRepository.save(quotesNotebook);
 
         // Save Comment to Blog Post #1
-        Comment comment1 = new Comment(LocalDate.of(2020,4, 15), "Rosalind", "rosalind@gmail.com",
+        Comment comment1 = new Comment(LocalDate.of(2020,4, 15), "Rosalind",
                 "I admire your writting sir.", 1, 2L);
         this.commentRepository.save(comment1);
 
         // Save a quote note
-        Comment comment2 = new Comment(LocalDate.of(2020,4, 15), "Horatio", "horatio@gmail.com",
+        Comment comment2 = new Comment(LocalDate.of(2020,4, 15), "Horatio",
                 "This has been great effort.", 10, 2L);
         this.commentRepository.save(comment2);
 

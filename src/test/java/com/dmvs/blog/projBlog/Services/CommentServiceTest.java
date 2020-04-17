@@ -36,8 +36,7 @@ public class CommentServiceTest {
     public void testFindByIdFound() {
         Long givenCommentId = 1L;
         Comment mockComment = new Comment(givenCommentId, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, 1L);
+                "Rosalind", "I admire your writing sir.", 1, 1L);
         given(commentRepository.findById(givenCommentId)).willReturn(Optional.of(mockComment));
 
         Optional<Comment> returnComment = commentService.findById(givenCommentId);
@@ -62,11 +61,9 @@ public class CommentServiceTest {
     public void testFindAllByBlogIdFound() {
         Long givenBlogId = 1L;
         Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, givenBlogId);
+                "Rosalind", "I admire your writing sir.", 1, givenBlogId);
         Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
-                "changed", "changed@gmail.com",
-                "I admire your change sir.", 10, givenBlogId);
+                "changed", "I admire your change sir.", 10, givenBlogId);
         List<Comment> mockCommentList = new ArrayList<>(Arrays.asList(comment1, comment2));
         given(commentRepository.findAllByBlogId(givenBlogId)).willReturn(mockCommentList);
 
@@ -81,8 +78,7 @@ public class CommentServiceTest {
     @DisplayName("Test save - Success")
     public void testSave() {
         Comment mockComment = new Comment(1L, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, 1L);
+                "Rosalind", "I admire your writing sir.", 1, 1L);
         given(commentRepository.save(mockComment)).willReturn(mockComment);
 
         Comment returnComment = commentService.saveComment(mockComment);
@@ -96,8 +92,7 @@ public class CommentServiceTest {
         Long givenCommentId = 1L;
         String expectedText = "I admire your change sir.";
         Comment beforeComment = new Comment(givenCommentId, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, 1L);
+                "Rosalind", "I admire your writing sir.", 1, 1L);
         given(commentRepository.findById(givenCommentId)).willReturn(Optional.of(beforeComment));
         given(commentRepository.save(beforeComment)).willReturn(beforeComment);
 
@@ -124,8 +119,7 @@ public class CommentServiceTest {
     public void testDeleteCommentFound() {
         Long givenCommentId = 1L;
         Comment beforeComment = new Comment(givenCommentId, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, 1L);
+                "Rosalind", "I admire your writing sir.", 1, 1L);
         given(commentRepository.findById(givenCommentId)).willReturn(Optional.of(beforeComment));
 
         Boolean returnBoolean = commentService.deleteCommentById(givenCommentId);

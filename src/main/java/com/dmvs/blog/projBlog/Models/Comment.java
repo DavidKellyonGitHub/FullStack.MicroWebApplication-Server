@@ -15,8 +15,6 @@ public class Comment {
     private LocalDate dateCreated;
     @Column(name = "USERNAME")
     private String username;
-    @Column(name = "USER_EMAIL")
-    private String userEmail;
     @Column(name = "TEXT")
     private String text;
     @Column(name = "LIKES")
@@ -27,17 +25,16 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(LocalDate dateCreated, String username, String userEmail, String text, Integer likes, Long blogId) {
+    public Comment(LocalDate dateCreated, String username, String text, Integer likes, Long blogId) {
         this.dateCreated = dateCreated;
         this.username = username;
-        this.userEmail = userEmail;
         this.text = text;
         this.likes = likes;
         this.blogId = blogId;
     }
 
-    public Comment(Long commentId, LocalDate dateCreated, String username, String userEmail, String text, Integer likes, Long blogId) {
-        this(dateCreated, username, userEmail, text, likes, blogId);
+    public Comment(Long commentId, LocalDate dateCreated, String username, String text, Integer likes, Long blogId) {
+        this(dateCreated, username, text, likes, blogId);
         this.commentId = commentId;
     }
 
@@ -63,14 +60,6 @@ public class Comment {
 
     public void setUsername(String user) {
         this.username = username;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
     }
 
     public String getText() {
@@ -105,7 +94,6 @@ public class Comment {
         return Objects.equals(commentId, comment.commentId) &&
                 Objects.equals(dateCreated, comment.dateCreated) &&
                 Objects.equals(username, comment.username) &&
-                Objects.equals(userEmail, comment.userEmail) &&
                 Objects.equals(text, comment.text) &&
                 Objects.equals(likes, comment.likes) &&
                 Objects.equals(blogId, comment.blogId);
