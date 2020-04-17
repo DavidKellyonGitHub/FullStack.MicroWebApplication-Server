@@ -22,12 +22,11 @@ public class UserAccount {
     private String password;
     @Column(name = "EMAIL")
     private String email;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "USERNAME")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userAccount")
     @JsonIgnore
     private List<BlogPost> blogPostList;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "USERNAME")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID")
     @JsonIgnore
     private List<Comment> commentList;
 

@@ -10,8 +10,6 @@ import java.util.List;
 @Repository
 public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {
 
-    List<BlogPost> findAllByDateCreated(LocalDate date);
-
     List<BlogPost> findAllByDateCreatedAfter(LocalDate date);
 
     List<BlogPost> findAllByTag(String tag);

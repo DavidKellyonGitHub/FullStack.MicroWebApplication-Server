@@ -1,7 +1,5 @@
 package com.dmvs.blog.projBlog.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,8 +26,10 @@ public class BlogPost {
     private String status;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "BLOG_ID")
-    @JsonIgnore
     private List<Comment> commentList;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private UserAccount userAccount;
 
     public BlogPost() {
     }
@@ -111,6 +111,14 @@ public class BlogPost {
         this.commentList = commentList;
     }
 
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -122,6 +130,7 @@ public class BlogPost {
                 Objects.equals(title, blogPost.title) &&
                 Objects.equals(body, blogPost.body) &&
                 Objects.equals(tag, blogPost.tag) &&
-                Objects.equals(status, blogPost.status);
+                Objects.equals(status, blogPost.status) &&
+                Objects.equals(userAccount, blogPost.userAccount);
     }
 }

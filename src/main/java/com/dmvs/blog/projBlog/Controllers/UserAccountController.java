@@ -37,6 +37,16 @@ public class UserAccountController {
         return new ResponseEntity<>(userAccountService.findAllUser(), HttpStatus.OK);
     }
 
+    @GetMapping("/hasUsername/")
+    public ResponseEntity<Boolean> doesUsernameExist(@RequestParam String username){
+        return new ResponseEntity<>(userAccountService.doesUsernameExist(username), HttpStatus.OK);
+    }
+
+    @GetMapping("/hasEmail/")
+    public ResponseEntity<Boolean> doesEmailExist(@RequestParam String email){
+        return new ResponseEntity<>(userAccountService.doesEmailExist(email), HttpStatus.OK);
+    }
+
     @PostMapping("/save")
     public ResponseEntity<UserAccount> saveUserAccount(@RequestBody UserAccount userAccount) {
         UserAccount newUserAccount = userAccountService.saveUserAccount(userAccount);

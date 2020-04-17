@@ -21,20 +21,23 @@ public class Comment {
     private Integer likes;
     @Column(name = "BLOG_ID")
     private Long blogId;
+    @Column(name = "USER_ID")
+    private Long userId;
 
     public Comment() {
     }
 
-    public Comment(LocalDate dateCreated, String username, String text, Integer likes, Long blogId) {
+    public Comment(LocalDate dateCreated, String username, String text, Integer likes, Long blogId, Long userId) {
         this.dateCreated = dateCreated;
         this.username = username;
         this.text = text;
         this.likes = likes;
         this.blogId = blogId;
+        this.userId = userId;
     }
 
-    public Comment(Long commentId, LocalDate dateCreated, String username, String text, Integer likes, Long blogId) {
-        this(dateCreated, username, text, likes, blogId);
+    public Comment(Long commentId, LocalDate dateCreated, String username, String text, Integer likes, Long blogId, Long userId) {
+        this(dateCreated, username, text, likes, blogId, userId);
         this.commentId = commentId;
     }
 
@@ -58,7 +61,7 @@ public class Comment {
         return username;
     }
 
-    public void setUsername(String user) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -86,6 +89,14 @@ public class Comment {
         this.blogId = blogId;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,6 +107,7 @@ public class Comment {
                 Objects.equals(username, comment.username) &&
                 Objects.equals(text, comment.text) &&
                 Objects.equals(likes, comment.likes) &&
-                Objects.equals(blogId, comment.blogId);
+                Objects.equals(blogId, comment.blogId) &&
+                Objects.equals(userId, comment.userId);
     }
 }

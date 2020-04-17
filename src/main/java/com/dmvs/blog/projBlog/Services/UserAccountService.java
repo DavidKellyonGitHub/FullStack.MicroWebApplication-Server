@@ -49,4 +49,12 @@ public class UserAccountService {
         }
         return false;
     }
+
+    public Boolean doesUsernameExist(String username){
+        return userAccountRepo.existsByUsername(username);
+    }
+
+    public Boolean doesEmailExist(String email){
+        return userAccountRepo.existsByEmail(email);
+    }
 }
