@@ -15,6 +15,8 @@ public class BlogPost {
     private Long blogId;
     @Column(name = "DATE_CREATED")
     private LocalDate dateCreated;
+    @Column(name = "USERNAME")
+    private String username;
     @Column(name = "TITLE")
     private String title;
     @Column(name = "BODY", length = 6500)
@@ -31,8 +33,7 @@ public class BlogPost {
     public BlogPost() {
     }
 
-    public BlogPost(Long blogId, LocalDate dateCreated, String title, String body, String tag, String status) {
-        this.blogId = blogId;
+    public BlogPost(LocalDate dateCreated, String title, String body, String tag, String status) {
         this.dateCreated = dateCreated;
         this.title = title;
         this.body = body;
@@ -40,12 +41,9 @@ public class BlogPost {
         this.status = status;
     }
 
-    public BlogPost(LocalDate dateCreated, String title, String body, String tag, String status) {
-        this.dateCreated = dateCreated;
-        this.title = title;
-        this.body = body;
-        this.tag = tag;
-        this.status = status;
+    public BlogPost(Long blogId, LocalDate dateCreated, String title, String body, String tag, String status) {
+        this(dateCreated, title, body, tag, status);
+        this.blogId = blogId;
     }
 
     public Long getBlogId() {
@@ -62,6 +60,14 @@ public class BlogPost {
 
     public void setDateCreated(LocalDate dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getTitle() {

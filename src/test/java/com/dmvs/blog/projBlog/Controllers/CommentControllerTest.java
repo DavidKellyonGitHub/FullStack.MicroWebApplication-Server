@@ -218,7 +218,7 @@ public class CommentControllerTest {
             StringBuilder jsonString = new StringBuilder("{");
             jsonString.append("\"commentId\":"+obj.getCommentId()+",")
                     .append("\"dateCreated\":\""+obj.getDateCreated()+"\",")
-                    .append("\"user\":\""+obj.getUser()+"\",")
+                    .append("\"username\":\""+obj.getUsername()+"\",")
                     .append("\"userEmail\":\""+obj.getUserEmail()+"\",")
                     .append("\"text\":\""+obj.getText()+"\",")
                     .append("\"likes\":"+obj.getLikes()+",")

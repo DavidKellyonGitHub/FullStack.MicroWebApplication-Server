@@ -13,9 +13,9 @@ public class Comment {
     private Long commentId;
     @Column(name = "DATE_CREATED")
     private LocalDate dateCreated;
-    @Column(name = "AUTHOR")
-    private String user;
-    @Column(name = "AUTHOR_EMAIL")
+    @Column(name = "USERNAME")
+    private String username;
+    @Column(name = "USER_EMAIL")
     private String userEmail;
     @Column(name = "TEXT")
     private String text;
@@ -27,23 +27,18 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Long commentId, LocalDate dateCreated, String user, String userEmail, String text, Integer likes, Long blogId) {
-        this.commentId = commentId;
+    public Comment(LocalDate dateCreated, String username, String userEmail, String text, Integer likes, Long blogId) {
         this.dateCreated = dateCreated;
-        this.user = user;
+        this.username = username;
         this.userEmail = userEmail;
         this.text = text;
         this.likes = likes;
         this.blogId = blogId;
     }
 
-    public Comment(LocalDate dateCreated, String user, String userEmail, String text, Integer likes, Long blogId) {
-        this.dateCreated = dateCreated;
-        this.user = user;
-        this.userEmail = userEmail;
-        this.text = text;
-        this.likes = likes;
-        this.blogId = blogId;
+    public Comment(Long commentId, LocalDate dateCreated, String username, String userEmail, String text, Integer likes, Long blogId) {
+        this(dateCreated, username, userEmail, text, likes, blogId);
+        this.commentId = commentId;
     }
 
     public Long getCommentId() {
@@ -62,12 +57,12 @@ public class Comment {
         this.dateCreated = dateCreated;
     }
 
-    public String getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String user) {
+        this.username = username;
     }
 
     public String getUserEmail() {
@@ -109,7 +104,7 @@ public class Comment {
         Comment comment = (Comment) o;
         return Objects.equals(commentId, comment.commentId) &&
                 Objects.equals(dateCreated, comment.dateCreated) &&
-                Objects.equals(user, comment.user) &&
+                Objects.equals(username, comment.username) &&
                 Objects.equals(userEmail, comment.userEmail) &&
                 Objects.equals(text, comment.text) &&
                 Objects.equals(likes, comment.likes) &&
