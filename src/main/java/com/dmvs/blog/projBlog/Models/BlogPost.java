@@ -1,10 +1,9 @@
 package com.dmvs.blog.projBlog.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class BlogPost {
@@ -15,6 +14,8 @@ public class BlogPost {
     private Long blogId;
     @Column(name = "DATE_CREATED")
     private LocalDate dateCreated;
+    @Column(name = "USERNAME")
+    private String username;
     @Column(name = "TITLE")
     private String title;
     @Column(name = "BODY", length = 6500)
@@ -25,19 +26,12 @@ public class BlogPost {
     private String status;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "BLOG_ID")
-    @JsonIgnore
     private List<Comment> commentList;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private UserAccount userAccount;
 
     public BlogPost() {
-    }
-
-    public BlogPost(Long blogId, LocalDate dateCreated, String title, String body, String tag, String status) {
-        this.blogId = blogId;
-        this.dateCreated = dateCreated;
-        this.title = title;
-        this.body = body;
-        this.tag = tag;
-        this.status = status;
     }
 
     public BlogPost(LocalDate dateCreated, String title, String body, String tag, String status) {
@@ -46,6 +40,11 @@ public class BlogPost {
         this.body = body;
         this.tag = tag;
         this.status = status;
+    }
+
+    public BlogPost(Long blogId, LocalDate dateCreated, String title, String body, String tag, String status) {
+        this(dateCreated, title, body, tag, status);
+        this.blogId = blogId;
     }
 
     public Long getBlogId() {
@@ -62,6 +61,14 @@ public class BlogPost {
 
     public void setDateCreated(LocalDate dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getTitle() {
@@ -102,5 +109,28 @@ public class BlogPost {
 
     public void setCommentList(List<Comment> commentList) {
         this.commentList = commentList;
+    }
+
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BlogPost blogPost = (BlogPost) o;
+        return Objects.equals(blogId, blogPost.blogId) &&
+                Objects.equals(dateCreated, blogPost.dateCreated) &&
+                Objects.equals(username, blogPost.username) &&
+                Objects.equals(title, blogPost.title) &&
+                Objects.equals(body, blogPost.body) &&
+                Objects.equals(tag, blogPost.tag) &&
+                Objects.equals(status, blogPost.status) &&
+                Objects.equals(userAccount, blogPost.userAccount);
     }
 }
