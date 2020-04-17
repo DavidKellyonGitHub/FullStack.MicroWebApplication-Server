@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/blogPost")
+@RequestMapping("/zcwApp/blogPost")
+@CrossOrigin
 public class BlogPostController {
 
     private BlogPostService blogPostService;
@@ -26,19 +27,22 @@ public class BlogPostController {
 
     @GetMapping("/{blogId}")
     public ResponseEntity<?> findById(@PathVariable Long blogId) {
-        return this.blogPostService.findById(blogId)
-                .map(blogPost -> ResponseEntity.ok().body(blogPost))
+        return blogPostService.findById(blogId)
+                .map(blogPost -> ResponseEntity
+                        .ok()
+                        .body(blogPost))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/allByTag/{tag}")
-    public ResponseEntity<List<BlogPost>> findByTag(@PathVariable String tag){
+    @GetMapping("/allByTag/")
+    public ResponseEntity<List<BlogPost>> findByTag(@RequestParam String tag){
         return new ResponseEntity<>(blogPostService.findByTag(tag), HttpStatus.OK);
     }
 
-    @GetMapping("/allByDate/{localDate}")
-    public ResponseEntity<List<BlogPost>> findByDate(@PathVariable LocalDate localDate){
-        return new ResponseEntity<>(blogPostService.findByDate(localDate), HttpStatus.OK);
+    @GetMapping("/allByDate/")
+    public ResponseEntity<List<BlogPost>> findByDate(@RequestParam String year,@RequestParam String month,@RequestParam String day){
+        LocalDate localDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+        return new ResponseEntity<>(blogPostService.findAllByDateCreateAfter(localDate), HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -52,7 +56,7 @@ public class BlogPostController {
 
         try {
             return ResponseEntity
-                    .created(new URI("/blogPost/" + newBlogPost.getBlogId()))
+                    .created(new URI("/zcwApp/blogPost/" + newBlogPost.getBlogId()))
                     .body(newBlogPost);
         } catch (URISyntaxException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -68,7 +72,7 @@ public class BlogPostController {
                     try{
                         return ResponseEntity
                                 .ok()
-                                .location(new URI("/comment/" + blogPost.getBlogId()))
+                                .location(new URI("/zcwApp/blogPost/" + blogPost.getBlogId()))
                                 .body(blogPost);
                     }catch(URISyntaxException e){
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

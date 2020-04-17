@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,11 +26,10 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
+@ActiveProfiles("h2")
 public class CommentControllerTest {
 
     @Autowired
@@ -43,19 +43,17 @@ public class CommentControllerTest {
     public void testFindByIdFound() throws Exception {
         Long givenId = 1L;
         Comment getComment = new Comment(1L, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, 1L);
+                "Rosalind", "I admire your writing sir.", 1, 1L, 1L);
         given(commentService.findById(givenId)).willReturn(Optional.of(getComment));
 
-        mockMvc.perform(get("/comment/{commentId}", givenId))
+        mockMvc.perform(get("/zcwApp/comment/{commentId}", givenId))
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 
                 .andExpect(jsonPath("$.commentId", is(1)))
                 .andExpect(jsonPath("$.dateCreated", is("2015-04-09")))
-                .andExpect(jsonPath("$.user", is("Rosalind")))
-                .andExpect(jsonPath("$.userEmail", is("rosalid@gmail.com")))
+                .andExpect(jsonPath("$.username", is("Rosalind")))
                 .andExpect(jsonPath("$.text", is("I admire your writing sir.")))
                 .andExpect(jsonPath("$.likes", is(1)))
                 .andExpect(jsonPath("$.blogId", is(1)));
@@ -66,7 +64,7 @@ public class CommentControllerTest {
     public void testFindByIdNotFound() throws Exception {
         given(commentService.findById(1L)).willReturn(Optional.empty());
 
-        mockMvc.perform(get("/comment/{commentId}", 1L))
+        mockMvc.perform(get("/zcwApp/comment/{commentId}", 1L))
 
                 .andExpect(status().isNotFound());
     }
@@ -76,15 +74,13 @@ public class CommentControllerTest {
     public void testFindAllByBlogId() throws Exception {
         Long givenBlogId = 1L;
         Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, givenBlogId);
+                "Rosalind", "I admire your writing sir.", 1, givenBlogId, 1L);
         Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
-                "changed", "changed@gmail.com",
-                "I admire your change sir.", 10, givenBlogId);
+                "changed", "I admire your change sir.", 10, givenBlogId, 1L);
         List<Comment> commentList = new ArrayList<>(Arrays.asList(comment1, comment2));
         given(commentService.findAllByBlogId(1L)).willReturn(commentList);
 
-        mockMvc.perform(get("/comment/allByBlogId/{blogId}", givenBlogId))
+        mockMvc.perform(get("/zcwApp/comment/allByBlogId/{blogId}", givenBlogId))
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -92,15 +88,13 @@ public class CommentControllerTest {
                 .andExpect(jsonPath("$.*").isArray())
                 .andExpect(jsonPath("$[0].commentId", is(1)))
                 .andExpect(jsonPath("$[0].dateCreated", is("2015-04-09")))
-                .andExpect(jsonPath("$[0].user", is("Rosalind")))
-                .andExpect(jsonPath("$[0].userEmail", is("rosalid@gmail.com")))
+                .andExpect(jsonPath("$[0].username", is("Rosalind")))
                 .andExpect(jsonPath("$[0].text", is("I admire your writing sir.")))
                 .andExpect(jsonPath("$[0].likes", is(1)))
                 .andExpect(jsonPath("$[0].blogId", is(1)))
                 .andExpect(jsonPath("$[1].commentId", is(2)))
                 .andExpect(jsonPath("$[1].dateCreated", is("2020-05-10")))
-                .andExpect(jsonPath("$[1].user", is("changed")))
-                .andExpect(jsonPath("$[1].userEmail", is("changed@gmail.com")))
+                .andExpect(jsonPath("$[1].username", is("changed")))
                 .andExpect(jsonPath("$[1].text", is("I admire your change sir.")))
                 .andExpect(jsonPath("$[1].likes", is(10)))
                 .andExpect(jsonPath("$[1].blogId", is(1)));
@@ -111,29 +105,28 @@ public class CommentControllerTest {
     @DisplayName("POST /comment - Success")
     public void testSaveCommentSuccess() throws Exception {
         Comment postComment = new Comment(LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, 1L);
+                "Rosalind", "I admire your writing sir.", 10, 1L, 1L);
         Comment mockComment = new Comment(1L, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosalid@gmail.com",
-                "I admire your writing sir.", 1, 1L);
+                "Rosalind", "I admire your writing sir.", 10, 1L, 1L);
         given(commentService.saveComment(postComment)).willReturn(mockComment);
 
-        mockMvc.perform(post("/comment/save")
+        String test = asJsonString(postComment);
+        mockMvc.perform(post("/zcwApp/comment/save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postComment)))
 
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 
-                .andExpect(header().string(HttpHeaders.LOCATION, "/comment/1"))
+                .andExpect(header().string(HttpHeaders.LOCATION, "/zcwApp/comment/1"))
 
                 .andExpect(jsonPath("$.commentId", is(1)))
                 .andExpect(jsonPath("$.dateCreated", is("2015-04-09")))
-                .andExpect(jsonPath("$.user", is("Rosalind")))
-                .andExpect(jsonPath("$.userEmail", is("rosalid@gmail.com")))
+                .andExpect(jsonPath("$.username", is("Rosalind")))
                 .andExpect(jsonPath("$.text", is("I admire your writing sir.")))
-                .andExpect(jsonPath("$.likes", is(1)))
-                .andExpect(jsonPath("$.blogId", is(1)));
+                .andExpect(jsonPath("$.likes", is(10)))
+                .andExpect(jsonPath("$.blogId", is(1)))
+                .andExpect(jsonPath("$.userId", is(1)));
     }
 
 //    @Test
@@ -156,12 +149,11 @@ public class CommentControllerTest {
     public void testUpdateCommentSuccess() throws Exception {
         Long givenId = 1L;
         Comment mockComment = new Comment(givenId, LocalDate.of(2015, 4, 9),
-                "changed", "change@gmail.com",
-                "I admire your change sir.", 10, 1L);
+                "changed", "I admire your change sir.", 10, 1L, 1L);
         String changedText = "I admire your change sir.";
         given(commentService.updateComment(givenId, changedText)).willReturn(Optional.of(mockComment));
 
-        mockMvc.perform(put("/comment/update/{commentId}", givenId)
+        mockMvc.perform(put("/zcwApp/comment/update/{commentId}", givenId)
                 .header(HttpHeaders.IF_MATCH, 1)
                 .param("newText", changedText))
 
@@ -170,8 +162,7 @@ public class CommentControllerTest {
 
                 .andExpect(jsonPath("$.commentId", is(1)))
                 .andExpect(jsonPath("$.dateCreated", is("2015-04-09")))
-                .andExpect(jsonPath("$.user", is("changed")))
-                .andExpect(jsonPath("$.userEmail", is("change@gmail.com")))
+                .andExpect(jsonPath("$.username", is("changed")))
                 .andExpect(jsonPath("$.text", is("I admire your change sir.")))
                 .andExpect(jsonPath("$.likes", is(10)))
                 .andExpect(jsonPath("$.blogId", is(1)));
@@ -184,7 +175,7 @@ public class CommentControllerTest {
         String changedText = "I admire your change sir.";
         given(commentService.updateComment(givenId, changedText)).willReturn(Optional.empty());
 
-        mockMvc.perform(put("/comment/update/{commentId}", givenId)
+        mockMvc.perform(put("/zcwApp/comment/update/{commentId}", givenId)
                 .header(HttpHeaders.IF_MATCH, 1)
                 .param("newText", changedText))
 
@@ -197,7 +188,7 @@ public class CommentControllerTest {
         Long givenId = 1L;
         given(commentService.deleteCommentById(givenId)).willReturn(true);
 
-        mockMvc.perform(delete("/comment/delete/{commentId}", givenId))
+        mockMvc.perform(delete("/zcwApp/comment/delete/{commentId}", givenId))
 
                 .andExpect(status().isOk());
     }
@@ -208,7 +199,7 @@ public class CommentControllerTest {
         Long givenId = 1L;
         given(commentService.deleteCommentById(givenId)).willReturn(false);
 
-        mockMvc.perform(delete("/comment/delete/{commentId}", givenId))
+        mockMvc.perform(delete("/zcwApp/comment/delete/{commentId}", givenId))
 
                 .andExpect(status().isNotFound());
     }
@@ -218,11 +209,11 @@ public class CommentControllerTest {
             StringBuilder jsonString = new StringBuilder("{");
             jsonString.append("\"commentId\":"+obj.getCommentId()+",")
                     .append("\"dateCreated\":\""+obj.getDateCreated()+"\",")
-                    .append("\"user\":\""+obj.getUser()+"\",")
-                    .append("\"userEmail\":\""+obj.getUserEmail()+"\",")
+                    .append("\"username\":\""+obj.getUsername()+"\",")
                     .append("\"text\":\""+obj.getText()+"\",")
                     .append("\"likes\":"+obj.getLikes()+",")
-                    .append("\"blogId\":"+obj.getBlogId()+"}");
+                    .append("\"blogId\":"+obj.getBlogId()+",")
+                    .append("\"userId\":"+obj.getUserId()+"}");
             return jsonString.toString();
         } catch (Exception e) {
             throw new RuntimeException(e);

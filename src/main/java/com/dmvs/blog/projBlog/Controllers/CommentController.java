@@ -12,7 +12,8 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/zcwApp/comment")
+@CrossOrigin
 public class CommentController {
 
     private CommentService commentService;
@@ -24,14 +25,26 @@ public class CommentController {
 
     @GetMapping("/{commentId}")
     public ResponseEntity<?> findById(@PathVariable Long commentId) {
-        return this.commentService.findById(commentId)
-                .map(comment -> ResponseEntity.ok().body(comment))
+        return commentService.findById(commentId)
+                .map(comment -> ResponseEntity
+                        .ok()
+                        .body(comment))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/allByUsername/")
+    public ResponseEntity<Iterable<Comment>> findAllByUsername(@RequestParam String username){
+        return new ResponseEntity<>(commentService.findAllByUsername(username), HttpStatus.OK);
     }
 
     @GetMapping("/allByBlogId/{blogId}")
     public ResponseEntity<Iterable<Comment>> findAllByBlogId(@PathVariable Long blogId) {
         return new ResponseEntity<>(commentService.findAllByBlogId(blogId), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<Comment>> findAllComments(){
+        return new ResponseEntity<>(commentService.findAllComments(), HttpStatus.OK);
     }
 
     @PostMapping("/save")
@@ -40,7 +53,7 @@ public class CommentController {
 
         try {
             return ResponseEntity
-                    .created(new URI("/comment/" + newComment.getCommentId()))
+                    .created(new URI("/zcwApp/comment/" + newComment.getCommentId()))
                     .body(newComment);
         } catch (URISyntaxException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -56,7 +69,7 @@ public class CommentController {
                     try{
                         return ResponseEntity
                                 .ok()
-                                .location(new URI("/comment/" + comment.getCommentId()))
+                                .location(new URI("/zcwApp/comment/" + comment.getCommentId()))
                                 .body(comment);
                     }catch(URISyntaxException e){
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
