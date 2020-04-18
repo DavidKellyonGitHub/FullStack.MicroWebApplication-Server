@@ -102,35 +102,15 @@ class BlogPostServiceTest {
         assertTrue(returnBlogPostList.contains(blogPost1));
         assertTrue(returnBlogPostList.contains(blogPost2));
     }
-//
-//    @Test
-//    @DisplayName("Test findAll - Found")
-//    public void testFindAll() {
-//        Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
-//                "Rosalind", "I admire your writing sir.", 1, 1L, 2L);
-//        Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
-//                "changed", "I admire your change sir.", 10, 3L, 4L);
-//        List<Comment> mockCommentList = new ArrayList<>(Arrays.asList(comment1, comment2));
-//        given(commentRepository.findAll()).willReturn(mockCommentList);
-//
-//        List<Comment> returnCommentList = commentService.findAllComments();
-//
-//        assertEquals(2, returnCommentList.size());
-//        assertTrue(returnCommentList.contains(comment1));
-//        assertTrue(returnCommentList.contains(comment2));
-//    }
-//
-//    @Test
-//    @DisplayName("Test save - Success")
-//    public void testSave() {
-//        Comment mockComment = new Comment(1L, LocalDate.of(2015, 4, 9),
-//                "Rosalind", "I admire your writing sir.", 1, 1L, 1L);
-//        given(commentRepository.save(mockComment)).willReturn(mockComment);
-//
-//        Comment returnComment = commentService.saveComment(mockComment);
-//
-//        assertEquals(mockComment, returnComment);
-//    }
+
+    @Test
+    @DisplayName("Test savePost - Success")
+    public void testSavePost() {
+        BlogPost mockBlogPost = new BlogPost(1L, LocalDate.now(), "Liskov", "blog title", "Blog body", "Blog tag", "posted");
+        given(blogPostRepository.save(mockBlogPost)).willReturn(mockBlogPost);
+        BlogPost returnBlogPost = blogPostService.savePost(mockBlogPost);
+        assertEquals(mockBlogPost, returnBlogPost);
+    }
 //
 //    @Test
 //    @DisplayName("Test update - Success")
