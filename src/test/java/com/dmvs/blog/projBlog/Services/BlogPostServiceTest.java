@@ -14,10 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -77,8 +74,7 @@ class BlogPostServiceTest {
     @DisplayName("Test findById - Found")
     public void testFindByIdFound() {
         Long givenBlogPostId = 1L;
-        BlogPost mockBlogPost = new BlogPost(givenBlogPostId, LocalDate.of(2015, 4, 9),
-                "Liskov", "blog title", "blog body", "blog tag", "posted");
+        BlogPost mockBlogPost = new BlogPost(givenBlogPostId, LocalDate.now(), "Liskov", "blog title", "blog body", "blog tag", "posted");
         given(blogPostRepository.findById(givenBlogPostId)).willReturn(Optional.of(mockBlogPost));
         Optional<BlogPost> returnBlogPost = blogPostService.findById(givenBlogPostId);
         assertTrue(returnBlogPost.isPresent());
@@ -93,42 +89,19 @@ class BlogPostServiceTest {
         Optional<BlogPost> returnComment = blogPostService.findById(givenBlogPostId);
         assertFalse(returnComment.isPresent());
     }
-//
-//    @Test
-//    @DisplayName("Test findAllByUserId - Found")
-//    public void testFindAllByUserIdFound() {
-//        Long givenUserId = 2L;
-//        Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
-//                "Rosalind", "I admire your writing sir.", 1, 2L, givenUserId);
-//        Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
-//                "changed", "I admire your change sir.", 10, 1L, givenUserId);
-//        List<Comment> mockCommentList = new ArrayList<>(Arrays.asList(comment1, comment2));
-//        given(commentRepository.findAllByUserId(givenUserId)).willReturn(mockCommentList);
-//
-//        List<Comment> returnCommentList = commentService.findAllByUserId(givenUserId);
-//
-//        assertEquals(2, returnCommentList.size());
-//        assertTrue(returnCommentList.contains(comment1));
-//        assertTrue(returnCommentList.contains(comment2));
-//    }
-//
-//    @Test
-//    @DisplayName("Test findAllByBlogId - Found")
-//    public void testFindAllByBlogIdFound() {
-//        Long givenBlogId = 1L;
-//        Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
-//                "Rosalind", "I admire your writing sir.", 1, givenBlogId, 1L);
-//        Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
-//                "changed", "I admire your change sir.", 10, givenBlogId, 4L);
-//        List<Comment> mockCommentList = new ArrayList<>(Arrays.asList(comment1, comment2));
-//        given(commentRepository.findAllByBlogId(givenBlogId)).willReturn(mockCommentList);
-//
-//        List<Comment> returnCommentList = commentService.findAllByBlogId(givenBlogId);
-//
-//        assertEquals(2, returnCommentList.size());
-//        assertTrue(returnCommentList.contains(comment1));
-//        assertTrue(returnCommentList.contains(comment2));
-//    }
+
+    @Test
+    @DisplayName("Test findAll - Found")
+    public void testFindAllFound() {
+        BlogPost blogPost1 = new BlogPost(LocalDate.now(), "Liskov", "blog title", "blog body", "blog tag", "posted");
+        BlogPost blogPost2 = new BlogPost(LocalDate.now(), "Liskov", "blog title 2", "blog body 2", "Blog tag" ,"posted");
+        List<BlogPost> mockBlogPostList = new ArrayList<>(Arrays.asList(blogPost1, blogPost2));
+        given(blogPostRepository.findAll()).willReturn(mockBlogPostList);
+        List<BlogPost> returnBlogPostList = blogPostService.findAll();
+        assertEquals(2, returnBlogPostList.size());
+        assertTrue(returnBlogPostList.contains(blogPost1));
+        assertTrue(returnBlogPostList.contains(blogPost2));
+    }
 //
 //    @Test
 //    @DisplayName("Test findAll - Found")
