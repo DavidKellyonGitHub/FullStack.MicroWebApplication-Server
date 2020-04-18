@@ -27,11 +27,11 @@ import static org.mockito.Mockito.verify;
 @ActiveProfiles("h2")
 public class CommentServiceTest {
 
-    @MockBean
-    CommentRepository commentRepository;
-
     @Autowired
     CommentService commentService;
+
+    @MockBean
+    CommentRepository commentRepository;
 
     @Test
     @DisplayName("Test findById - Found")

@@ -41,12 +41,12 @@ public class CommentControllerTest {
     @Test
     @DisplayName("GET /comment/1 - Found")
     public void testFindByIdFound() throws Exception {
-        Long givenId = 1L;
+        Long givenBlogId = 1L;
         Comment getComment = new Comment(1L, LocalDate.of(2015, 4, 9),
                 "Rosalind", "I admire your writing sir.", 1, 1L, 1L);
-        given(commentService.findById(givenId)).willReturn(Optional.of(getComment));
+        given(commentService.findById(givenBlogId)).willReturn(Optional.of(getComment));
 
-        mockMvc.perform(get("/zcwApp/comment/{commentId}", givenId))
+        mockMvc.perform(get("/zcwApp/comment/{commentId}", givenBlogId))
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -56,7 +56,8 @@ public class CommentControllerTest {
                 .andExpect(jsonPath("$.username", is("Rosalind")))
                 .andExpect(jsonPath("$.text", is("I admire your writing sir.")))
                 .andExpect(jsonPath("$.likes", is(1)))
-                .andExpect(jsonPath("$.blogId", is(1)));
+                .andExpect(jsonPath("$.blogId", is(1)))
+                .andExpect(jsonPath("$.userId", is(1)));
     }
 
     @Test
@@ -76,7 +77,7 @@ public class CommentControllerTest {
         Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
                 "Rosalind", "I admire your writing sir.", 1, givenBlogId, 1L);
         Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
-                "changed", "I admire your change sir.", 10, givenBlogId, 1L);
+                "changed", "I admire your change sir.", 10, givenBlogId, 2L);
         List<Comment> commentList = new ArrayList<>(Arrays.asList(comment1, comment2));
         given(commentService.findAllByBlogId(1L)).willReturn(commentList);
 
@@ -92,12 +93,14 @@ public class CommentControllerTest {
                 .andExpect(jsonPath("$[0].text", is("I admire your writing sir.")))
                 .andExpect(jsonPath("$[0].likes", is(1)))
                 .andExpect(jsonPath("$[0].blogId", is(1)))
+                .andExpect(jsonPath("$[0].userId", is(1)))
                 .andExpect(jsonPath("$[1].commentId", is(2)))
                 .andExpect(jsonPath("$[1].dateCreated", is("2020-05-10")))
                 .andExpect(jsonPath("$[1].username", is("changed")))
                 .andExpect(jsonPath("$[1].text", is("I admire your change sir.")))
                 .andExpect(jsonPath("$[1].likes", is(10)))
-                .andExpect(jsonPath("$[1].blogId", is(1)));
+                .andExpect(jsonPath("$[1].blogId", is(1)))
+                .andExpect(jsonPath("$[1].userId", is(2)));
 
     }
 
@@ -147,13 +150,13 @@ public class CommentControllerTest {
     @Test
     @DisplayName("PUT /comment/1 - Success")
     public void testUpdateCommentSuccess() throws Exception {
-        Long givenId = 1L;
-        Comment mockComment = new Comment(givenId, LocalDate.of(2015, 4, 9),
+        Long givenBlogId = 1L;
+        Comment mockComment = new Comment(givenBlogId, LocalDate.of(2015, 4, 9),
                 "changed", "I admire your change sir.", 10, 1L, 1L);
         String changedText = "I admire your change sir.";
-        given(commentService.updateComment(givenId, changedText)).willReturn(Optional.of(mockComment));
+        given(commentService.updateComment(givenBlogId, changedText)).willReturn(Optional.of(mockComment));
 
-        mockMvc.perform(put("/zcwApp/comment/update/{commentId}", givenId)
+        mockMvc.perform(put("/zcwApp/comment/update/{commentId}", givenBlogId)
                 .header(HttpHeaders.IF_MATCH, 1)
                 .param("newText", changedText))
 
@@ -165,17 +168,18 @@ public class CommentControllerTest {
                 .andExpect(jsonPath("$.username", is("changed")))
                 .andExpect(jsonPath("$.text", is("I admire your change sir.")))
                 .andExpect(jsonPath("$.likes", is(10)))
-                .andExpect(jsonPath("$.blogId", is(1)));
+                .andExpect(jsonPath("$.blogId", is(1)))
+                .andExpect(jsonPath("$.userId", is(1)));
     }
 
     @Test
     @DisplayName("PUT /comment/1 - Not Found")
     public void testUpdateCommentNotFound() throws Exception {
-        Long givenId = 1L;
+        Long givenBlogId = 1L;
         String changedText = "I admire your change sir.";
-        given(commentService.updateComment(givenId, changedText)).willReturn(Optional.empty());
+        given(commentService.updateComment(givenBlogId, changedText)).willReturn(Optional.empty());
 
-        mockMvc.perform(put("/zcwApp/comment/update/{commentId}", givenId)
+        mockMvc.perform(put("/zcwApp/comment/update/{commentId}", givenBlogId)
                 .header(HttpHeaders.IF_MATCH, 1)
                 .param("newText", changedText))
 
@@ -185,10 +189,10 @@ public class CommentControllerTest {
     @Test
     @DisplayName("DELETE /comment/delete/1 - Success")
     public void testDeleteCommentSuccess() throws Exception {
-        Long givenId = 1L;
-        given(commentService.deleteCommentById(givenId)).willReturn(true);
+        Long givenBlogId = 1L;
+        given(commentService.deleteCommentById(givenBlogId)).willReturn(true);
 
-        mockMvc.perform(delete("/zcwApp/comment/delete/{commentId}", givenId))
+        mockMvc.perform(delete("/zcwApp/comment/delete/{commentId}", givenBlogId))
 
                 .andExpect(status().isOk());
     }
@@ -196,10 +200,10 @@ public class CommentControllerTest {
     @Test
     @DisplayName("DELETE /comment/delete/1 - Not Found")
     public void testDeleteCommentNotFound() throws Exception {
-        Long givenId = 1L;
-        given(commentService.deleteCommentById(givenId)).willReturn(false);
+        Long givenBlogId = 1L;
+        given(commentService.deleteCommentById(givenBlogId)).willReturn(false);
 
-        mockMvc.perform(delete("/zcwApp/comment/delete/{commentId}", givenId))
+        mockMvc.perform(delete("/zcwApp/comment/delete/{commentId}", givenBlogId))
 
                 .andExpect(status().isNotFound());
     }

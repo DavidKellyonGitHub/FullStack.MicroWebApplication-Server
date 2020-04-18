@@ -57,7 +57,12 @@ public class UserAccountController {
 
     @PutMapping("/update/{userId}")
     public ResponseEntity<?> updateUserAccount(@PathVariable Long userId, @RequestBody UserAccount newUserAccount) {
-        Optional<UserAccount> updatedUserAccount = userAccountService.updateUserAccount(userId, newUserAccount);
+        Optional<UserAccount> updatedUserAccount;
+        try {
+            updatedUserAccount = userAccountService.updateUserAccount(userId, newUserAccount);
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
 
         return updatedUserAccount
                 .map(userAccount -> {

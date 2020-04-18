@@ -28,11 +28,11 @@ import static org.mockito.Mockito.verify;
 @ActiveProfiles("h2")
 public class UserAccountServiceTest {
 
-    @MockBean
-    UserAccountRepository userAccountRepository;
-
     @Autowired
     UserAccountService userAccountService;
+
+    @MockBean
+    UserAccountRepository userAccountRepository;
 
     @Test
     @DisplayName("Test findById - Found")
@@ -144,6 +144,30 @@ public class UserAccountServiceTest {
         Optional<UserAccount> returnUserAccount = userAccountService.updateUserAccount(givenUserId, updatedUser);
 
         assertFalse(returnUserAccount.isPresent());
+    }
+
+    @Test
+    @DisplayName("Test update - Fail : Username exists")
+    public void testUpdateFailUsernameExists(){
+        Long givenUserId = 1L;
+        String givenUsername = "Rosalind";
+        UserAccount mockUser = new UserAccount(givenUserId, LocalDate.of(2015, 4, 9),
+                givenUsername, "rosaPass", "rosa@gmail.com");
+        given(userAccountRepository.existsByUsername(givenUsername)).willReturn(true);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userAccountService.updateUserAccount(givenUserId, mockUser));
+    }
+
+    @Test
+    @DisplayName("Test update - Fail : Email exists")
+    public void testUpdateFailEmailExists(){
+        Long givenUserId = 1L;
+        String givenEmail = "rosa@gmail.com";
+        UserAccount mockUser = new UserAccount(givenUserId, LocalDate.of(2015, 4, 9),
+                "Rosalind", "rosaPass", givenEmail);
+        given(userAccountRepository.existsByEmail(givenEmail)).willReturn(true);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userAccountService.updateUserAccount(givenUserId, mockUser));
     }
 
     @Test
