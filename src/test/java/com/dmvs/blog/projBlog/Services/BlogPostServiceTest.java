@@ -78,25 +78,21 @@ class BlogPostServiceTest {
     public void testFindByIdFound() {
         Long givenBlogPostId = 1L;
         BlogPost mockBlogPost = new BlogPost(givenBlogPostId, LocalDate.of(2015, 4, 9),
-                "Rosalind", "blog title", "blog body", "blog tag", "posted");
+                "Liskov", "blog title", "blog body", "blog tag", "posted");
         given(blogPostRepository.findById(givenBlogPostId)).willReturn(Optional.of(mockBlogPost));
-
         Optional<BlogPost> returnBlogPost = blogPostService.findById(givenBlogPostId);
-
         assertTrue(returnBlogPost.isPresent());
         assertSame(returnBlogPost.get(), mockBlogPost);
    }
-//
-//    @Test
-//    @DisplayName("Test findById - Not Found")
-//    public void testFindByIdNotFound(){
-//        Long givenCommentId = 1L;
-//        given(commentRepository.findById(givenCommentId)).willReturn(Optional.empty());
-//
-//        Optional<Comment> returnComment = commentService.findById(givenCommentId);
-//
-//        assertFalse(returnComment.isPresent());
-//    }
+
+    @Test
+    @DisplayName("Test findById - Not Found")
+    public void testFindByIdNotFound(){
+        Long givenBlogPostId = 1L;
+        given(blogPostRepository.findById(givenBlogPostId)).willReturn(Optional.empty());
+        Optional<BlogPost> returnComment = blogPostService.findById(givenBlogPostId);
+        assertFalse(returnComment.isPresent());
+    }
 //
 //    @Test
 //    @DisplayName("Test findAllByUserId - Found")
