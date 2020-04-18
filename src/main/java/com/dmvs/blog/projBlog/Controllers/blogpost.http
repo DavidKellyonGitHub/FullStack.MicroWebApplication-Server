@@ -60,7 +60,7 @@ GET {{host-url}}/comment/all
 
 ###
 
-GET {{host-url}}/comment/allByUsername/?username=Moe
+GET {{host-url}}/comment/allByUserId/4
 
 ###
 

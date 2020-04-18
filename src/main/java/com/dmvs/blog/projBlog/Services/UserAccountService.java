@@ -22,12 +22,17 @@ public class UserAccountService {
         return userAccountRepo.findById(userId);
     }
 
-    public List<UserAccount> findAllUser(){
+    public List<UserAccount> findAllUsers(){
         return userAccountRepo.findAll();
     }
 
-    public UserAccount saveUserAccount(UserAccount userAccount){
-        return userAccountRepo.save(userAccount);
+    public UserAccount saveUserAccount(UserAccount newUserAccount) throws IllegalArgumentException{
+        if(userAccountRepo.existsByUsername(newUserAccount.getUsername()))
+            throw new IllegalArgumentException("Username taken. Please choose another username.");
+        if(userAccountRepo.existsByEmail(newUserAccount.getEmail()))
+            throw new IllegalArgumentException("Email taken. Please enter a different email.");
+        return userAccountRepo.save(newUserAccount);
+
     }
 
     public Optional<UserAccount> updateUserAccount(Long userId, UserAccount newUserAccount){
@@ -48,13 +53,5 @@ public class UserAccountService {
             return true;
         }
         return false;
-    }
-
-    public Boolean doesUsernameExist(String username){
-        return userAccountRepo.existsByUsername(username);
-    }
-
-    public Boolean doesEmailExist(String email){
-        return userAccountRepo.existsByEmail(email);
     }
 }
