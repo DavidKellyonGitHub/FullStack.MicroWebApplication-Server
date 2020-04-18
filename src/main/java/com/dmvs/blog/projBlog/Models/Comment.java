@@ -13,37 +13,32 @@ public class Comment {
     private Long commentId;
     @Column(name = "DATE_CREATED")
     private LocalDate dateCreated;
-    @Column(name = "AUTHOR")
-    private String user;
-    @Column(name = "AUTHOR_EMAIL")
-    private String userEmail;
+    @Column(name = "USERNAME")
+    private String username;
     @Column(name = "TEXT")
     private String text;
     @Column(name = "LIKES")
     private Integer likes;
     @Column(name = "BLOG_ID")
     private Long blogId;
+    @Column(name = "USER_ID")
+    private Long userId;
 
     public Comment() {
     }
 
-    public Comment(Long commentId, LocalDate dateCreated, String user, String userEmail, String text, Integer likes, Long blogId) {
-        this.commentId = commentId;
+    public Comment(LocalDate dateCreated, String username, String text, Integer likes, Long blogId, Long userId) {
         this.dateCreated = dateCreated;
-        this.user = user;
-        this.userEmail = userEmail;
+        this.username = username;
         this.text = text;
         this.likes = likes;
         this.blogId = blogId;
+        this.userId = userId;
     }
 
-    public Comment(LocalDate dateCreated, String user, String userEmail, String text, Integer likes, Long blogId) {
-        this.dateCreated = dateCreated;
-        this.user = user;
-        this.userEmail = userEmail;
-        this.text = text;
-        this.likes = likes;
-        this.blogId = blogId;
+    public Comment(Long commentId, LocalDate dateCreated, String username, String text, Integer likes, Long blogId, Long userId) {
+        this(dateCreated, username, text, likes, blogId, userId);
+        this.commentId = commentId;
     }
 
     public Long getCommentId() {
@@ -62,20 +57,12 @@ public class Comment {
         this.dateCreated = dateCreated;
     }
 
-    public String getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getText() {
@@ -102,6 +89,14 @@ public class Comment {
         this.blogId = blogId;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,10 +104,10 @@ public class Comment {
         Comment comment = (Comment) o;
         return Objects.equals(commentId, comment.commentId) &&
                 Objects.equals(dateCreated, comment.dateCreated) &&
-                Objects.equals(user, comment.user) &&
-                Objects.equals(userEmail, comment.userEmail) &&
+                Objects.equals(username, comment.username) &&
                 Objects.equals(text, comment.text) &&
                 Objects.equals(likes, comment.likes) &&
-                Objects.equals(blogId, comment.blogId);
+                Objects.equals(blogId, comment.blogId) &&
+                Objects.equals(userId, comment.userId);
     }
 }

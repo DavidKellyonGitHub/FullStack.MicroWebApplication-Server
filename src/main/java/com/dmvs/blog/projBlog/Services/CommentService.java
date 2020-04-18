@@ -22,10 +22,16 @@ public class CommentService {
         return commentRepo.findById(commentId);
     }
 
-    // TODO: "Implement findAllCommentsByUser"
+    public List<Comment> findAllByUsername(String username){
+        return commentRepo.findAllByUsername(username);
+    }
 
     public List<Comment> findAllByBlogId(Long blogId) {
         return commentRepo.findAllByBlogId(blogId);
+    }
+
+    public List<Comment> findAllComments(){
+        return commentRepo.findAll();
     }
 
     public Comment saveComment(Comment comment) {
