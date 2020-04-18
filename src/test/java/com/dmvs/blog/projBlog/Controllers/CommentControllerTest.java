@@ -71,17 +71,67 @@ public class CommentControllerTest {
     }
 
     @Test
+    @DisplayName("GET /comment/allByUserId/2 - Found")
+    public void testFindAllByUserId() throws Exception {
+        Long givenUserId = 2L;
+        Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
+                "Rosalind", "I admire your writing sir.", 1, 1L, 1L);
+        Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
+                "changed", "I admire your change sir.", 10, 2L, givenUserId);
+        List<Comment> commentList = new ArrayList<>(Arrays.asList(comment2));
+        given(commentService.findAllByUserId(givenUserId)).willReturn(commentList);
+
+        mockMvc.perform(get("/zcwApp/comment/allByUserId/{userId}", givenUserId))
+
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
+                .andExpect(jsonPath("$[0].commentId", is(2)))
+                .andExpect(jsonPath("$[0].dateCreated", is("2020-05-10")))
+                .andExpect(jsonPath("$[0].username", is("changed")))
+                .andExpect(jsonPath("$[0].text", is("I admire your change sir.")))
+                .andExpect(jsonPath("$[0].likes", is(10)))
+                .andExpect(jsonPath("$[0].blogId", is(2)))
+                .andExpect(jsonPath("$[0].userId", is(2)));
+    }
+
+    @Test
     @DisplayName("GET /comment/allByBlogId/1 - Found")
     public void testFindAllByBlogId() throws Exception {
         Long givenBlogId = 1L;
         Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
                 "Rosalind", "I admire your writing sir.", 1, givenBlogId, 1L);
         Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
-                "changed", "I admire your change sir.", 10, givenBlogId, 2L);
-        List<Comment> commentList = new ArrayList<>(Arrays.asList(comment1, comment2));
+                "changed", "I admire your change sir.", 10, 2L, 2L);
+        List<Comment> commentList = new ArrayList<>(Arrays.asList(comment1));
         given(commentService.findAllByBlogId(1L)).willReturn(commentList);
 
         mockMvc.perform(get("/zcwApp/comment/allByBlogId/{blogId}", givenBlogId))
+
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
+                .andExpect(jsonPath("$.*").isArray())
+                .andExpect(jsonPath("$[0].commentId", is(1)))
+                .andExpect(jsonPath("$[0].dateCreated", is("2015-04-09")))
+                .andExpect(jsonPath("$[0].username", is("Rosalind")))
+                .andExpect(jsonPath("$[0].text", is("I admire your writing sir.")))
+                .andExpect(jsonPath("$[0].likes", is(1)))
+                .andExpect(jsonPath("$[0].blogId", is(1)))
+                .andExpect(jsonPath("$[0].userId", is(1)));
+    }
+
+    @Test
+    @DisplayName("GET /comment/all - Found")
+    public void testFindAll() throws Exception {
+        Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
+                "Rosalind", "I admire your writing sir.", 1, 1L, 1L);
+        Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
+                "changed", "I admire your change sir.", 10, 2L, 2L);
+        List<Comment> commentList = new ArrayList<>(Arrays.asList(comment1, comment2));
+        given(commentService.findAllComments()).willReturn(commentList);
+
+        mockMvc.perform(get("/zcwApp/comment/all"))
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -99,9 +149,8 @@ public class CommentControllerTest {
                 .andExpect(jsonPath("$[1].username", is("changed")))
                 .andExpect(jsonPath("$[1].text", is("I admire your change sir.")))
                 .andExpect(jsonPath("$[1].likes", is(10)))
-                .andExpect(jsonPath("$[1].blogId", is(1)))
+                .andExpect(jsonPath("$[1].blogId", is(2)))
                 .andExpect(jsonPath("$[1].userId", is(2)));
-
     }
 
     @Test

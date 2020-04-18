@@ -34,16 +34,17 @@ public class BlogPost {
     public BlogPost() {
     }
 
-    public BlogPost(LocalDate dateCreated, String title, String body, String tag, String status) {
+    public BlogPost(LocalDate dateCreated, String username, String title, String body, String tag, String status) {
         this.dateCreated = dateCreated;
+        this.username = username;
         this.title = title;
         this.body = body;
         this.tag = tag;
         this.status = status;
     }
 
-    public BlogPost(Long blogId, LocalDate dateCreated, String title, String body, String tag, String status) {
-        this(dateCreated, title, body, tag, status);
+    public BlogPost(Long blogId, LocalDate dateCreated, String username, String title, String body, String tag, String status) {
+        this(dateCreated, username, title, body, tag, status);
         this.blogId = blogId;
     }
 
