@@ -111,22 +111,18 @@ class BlogPostServiceTest {
         BlogPost returnBlogPost = blogPostService.savePost(mockBlogPost);
         assertEquals(mockBlogPost, returnBlogPost);
     }
-//
-//    @Test
-//    @DisplayName("Test update - Success")
-//    public void testUpdateSuccess(){
-//        Long givenCommentId = 1L;
-//        String expectedText = "I admire your change sir.";
-//        Comment beforeComment = new Comment(givenCommentId, LocalDate.of(2015, 4, 9),
-//                "Rosalind", "I admire your writing sir.", 1, 1L, 1L);
-//        given(commentRepository.findById(givenCommentId)).willReturn(Optional.of(beforeComment));
-//        given(commentRepository.save(beforeComment)).willReturn(beforeComment);
-//
-//        Optional<Comment> returnComment = commentService.updateComment(givenCommentId, expectedText);
-//        String actualText = returnComment.get().getText();
-//
-//        assertEquals(expectedText, actualText);
-//    }
+
+    @Test
+    @DisplayName("Test update - Success")
+    public void testUpdateSuccess(){
+        Long givenBlogPostId = 1L;
+        BlogPost expected = new BlogPost(LocalDate.of(2020,04,18), "Liskov", "updated title", "updated body", "updated tag", "posted");
+        BlogPost originalPost = new BlogPost(LocalDate.of(2020,04,18), "Liskov", "blog title", "blog body", "blog tag", "posted");
+        given(blogPostRepository.findById(givenBlogPostId)).willReturn(Optional.of(originalPost));
+        given(blogPostRepository.save(originalPost)).willReturn(originalPost);
+        Optional<BlogPost> returnBlogPost = blogPostService.updatePost(givenBlogPostId, expected);
+        assertEquals(expected, returnBlogPost.get());
+    }
 //
 //    @Test
 //    @DisplayName("Test update - Not Found")
