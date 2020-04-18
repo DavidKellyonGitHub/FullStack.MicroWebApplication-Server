@@ -32,9 +32,9 @@ public class CommentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/allByUsername/")
-    public ResponseEntity<Iterable<Comment>> findAllByUsername(@RequestParam String username){
-        return new ResponseEntity<>(commentService.findAllByUsername(username), HttpStatus.OK);
+    @GetMapping("/allByUserId/{userId}")
+    public ResponseEntity<Iterable<Comment>> findAllByUserId(@PathVariable Long userId){
+        return new ResponseEntity<>(commentService.findAllByUserId(userId), HttpStatus.OK);
     }
 
     @GetMapping("/allByBlogId/{blogId}")
