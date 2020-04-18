@@ -49,7 +49,7 @@ class BlogPostControllerTest {
     public void testFindByIdFound() throws Exception {
         Long givenId = 1L;
         BlogPost getBlogPost = new BlogPost(1L, LocalDate.of(2015, 4, 17),
-                "This is my first post", "Read all about it", "coding", "active");
+                "Matt","This is my first post", "Read all about it", "coding", "active");
         given(blogPostService.findById(givenId)).willReturn(Optional.of(getBlogPost));
 
         mockMvc.perform(get("/zcwApp/blogPost/{blogId}", givenId))
@@ -59,6 +59,7 @@ class BlogPostControllerTest {
 
                 .andExpect(jsonPath("$.blogId", is(1)))
                 .andExpect(jsonPath("$.dateCreated", is("2015-04-17")))
+                .andExpect(jsonPath("$.username", is("Matt")))
                 .andExpect(jsonPath("$.title", is("This is my first post")))
                 .andExpect(jsonPath("$.body", is("Read all about it")))
                 .andExpect(jsonPath("$.tag", is("coding")))
@@ -80,13 +81,15 @@ class BlogPostControllerTest {
     public void testFindAllByTag() throws Exception {
         Long givenBlogId = 1L;
         BlogPost blogPost1 = new BlogPost(1L, LocalDate.of(2015, 4, 17),
-                "This is my first post", "Read all about it", "coding", "active");
+                "Matt","This is my first post", "Read all about it", "coding", "active");
         BlogPost blogPost2 = new BlogPost(2L, LocalDate.of(2015, 5, 11),
-                "This is my second post", "Maybe read some of it?", "coding", "active");
+                "Matt","This is my second post", "Maybe read some of it?", "coding", "active");
         List<BlogPost> blogPostList = new ArrayList<>(Arrays.asList(blogPost1, blogPost2));
         given(blogPostService.findByTag("coding")).willReturn(blogPostList);
 
-        mockMvc.perform(get("/zcwApp/blogPost/allByTag/coding", givenBlogId))
+        mockMvc.perform(get("/zcwApp/blogPost/allByTag/", givenBlogId)
+                .param("tag", "coding"))
+
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -94,12 +97,14 @@ class BlogPostControllerTest {
                 .andExpect(jsonPath("$.*").isArray())
                 .andExpect(jsonPath("$[0].blogId", is(1)))
                 .andExpect(jsonPath("$[0].dateCreated", is("2015-04-17")))
+                .andExpect(jsonPath("$[0].username", is("Matt")))
                 .andExpect(jsonPath("$[0].title", is("This is my first post")))
                 .andExpect(jsonPath("$[0].body", is("Read all about it")))
                 .andExpect(jsonPath("$[0].tag", is("coding")))
                 .andExpect(jsonPath("$[0].status", is("active")))
                 .andExpect(jsonPath("$[1].blogId", is(2)))
                 .andExpect(jsonPath("$[1].dateCreated", is("2015-05-11")))
+                .andExpect(jsonPath("$[1].username", is("Matt")))
                 .andExpect(jsonPath("$[1].title", is("This is my second post")))
                 .andExpect(jsonPath("$[1].body", is("Maybe read some of it?")))
                 .andExpect(jsonPath("$[1].tag", is("coding")))
@@ -110,12 +115,12 @@ class BlogPostControllerTest {
     @DisplayName("POST /blogPost - Success")
     public void testSaveCommentSuccess() throws Exception {
         BlogPost postBlogPost = new BlogPost(1L, LocalDate.of(2015, 4, 17),
-                "This is my first post", "Read all about it", "coding", "active");
+                "Matt","This is my first post", "Read all about it", "coding", "active");
         BlogPost mockBlogPost = new BlogPost(1L, LocalDate.of(2015, 4, 17),
-                "This is my first post", "Read all about it", "coding", "active");
+                "Matt","This is my first post", "Read all about it", "coding", "active");
         given(blogPostService.savePost(postBlogPost)).willReturn(mockBlogPost);
 
-        String test = asJsonString(postBlogPost);
+        //String test = asJsonString(postBlogPost);
         mockMvc.perform(post("/zcwApp/blogPost/save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postBlogPost)))
@@ -127,22 +132,54 @@ class BlogPostControllerTest {
 
                 .andExpect(jsonPath("$.blogId", is(1)))
                 .andExpect(jsonPath("$.dateCreated", is("2015-04-17")))
+                .andExpect(jsonPath("$.username", is("Matt")))
                 .andExpect(jsonPath("$.title", is("This is my first post")))
                 .andExpect(jsonPath("$.body", is("Read all about it")))
                 .andExpect(jsonPath("$.tag", is("coding")))
                 .andExpect(jsonPath("$.status", is("active")));
     }
 
+    @Test
+    @DisplayName("GET /blogPost/allByDate/ - Found")
+    public void testFindAllByDate() throws Exception {
+        Long givenBlogId = 1L;
+        BlogPost blogPost1 = new BlogPost(1L, LocalDate.of(2015, 4, 17),
+                "Matt","This is my first post", "Read all about it", "coding", "active");
+        BlogPost blogPost2 = new BlogPost(2L, LocalDate.of(2015, 5, 11),
+                "Matt","This is my second post", "Maybe read some of it?", "coding", "active");
+        List<BlogPost> blogPostList = new ArrayList<>(Arrays.asList(blogPost1));
+        given(blogPostService.findAllByDateCreateAfter(LocalDate.of(2015, 4, 17))).willReturn(blogPostList);
+
+        mockMvc.perform(get("/zcwApp/blogPost/allByDate/", givenBlogId)
+                .param("year", "2015")
+                .param("month", "4")
+                .param("day", "17"))
+
+
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
+                .andExpect(jsonPath("$.*").isArray())
+                .andExpect(jsonPath("$[0].blogId", is(1)))
+                .andExpect(jsonPath("$[0].dateCreated", is("2015-04-17")))
+                .andExpect(jsonPath("$[0].username", is("Matt")))
+                .andExpect(jsonPath("$[0].title", is("This is my first post")))
+                .andExpect(jsonPath("$[0].body", is("Read all about it")))
+                .andExpect(jsonPath("$[0].tag", is("coding")))
+                .andExpect(jsonPath("$[0].status", is("active")));
+    }
+
+
     public static String asJsonString(final BlogPost obj) {
         try {
             StringBuilder jsonString = new StringBuilder("{");
             jsonString.append("\"blogId\":"+obj.getBlogId()+",")
                     .append("\"dateCreated\":\""+obj.getDateCreated()+"\",")
+                    .append("\"username\":\""+obj.getUsername()+"\",")
                     .append("\"title\":\""+obj.getTitle()+"\",")
                     .append("\"body\":\""+obj.getBody()+"\",")
-                    .append("\"tag\":"+obj.getTag()+",")
-                    .append("\"status\":"+obj.getStatus()+",");
-                    //.append("\"userId\":"+obj.getUserId()+"}");
+                    .append("\"tag\":\""+obj.getTag()+"\",")
+                    .append("\"status\":\""+obj.getStatus()+"\"}");
             return jsonString.toString();
         } catch (Exception e) {
             throw new RuntimeException(e);
