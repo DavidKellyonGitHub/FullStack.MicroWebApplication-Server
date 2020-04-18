@@ -123,18 +123,17 @@ class BlogPostServiceTest {
         Optional<BlogPost> returnBlogPost = blogPostService.updatePost(givenBlogPostId, expected);
         assertEquals(expected, returnBlogPost.get());
     }
-//
-//    @Test
-//    @DisplayName("Test update - Not Found")
-//    public void testUpdateNotFound(){
-//        Long givenCommentId = 1L;
-//        String expectedText = "I admire your change sir.";
-//        given(commentRepository.findById(givenCommentId)).willReturn(Optional.empty());
-//
-//        Optional<Comment> returnComment = commentService.updateComment(givenCommentId, expectedText);
-//
-//        assertFalse(returnComment.isPresent());
-//    }
+
+    @Test
+    @DisplayName("Test update - Not Found")
+    public void testUpdateNotFound(){
+        Long givenId = 1L;
+        BlogPost expected = new BlogPost(LocalDate.now(),"Liskov", "Blog Title", "blog body", "blog tag", "posted");
+        given(blogPostRepository.findById(givenId)).willReturn(Optional.empty());
+        Optional<BlogPost> returnBlogPost = blogPostService.updatePost(givenId, expected);
+        assertFalse(returnBlogPost.isPresent());
+    }
+
 //
 //    @Test
 //    @DisplayName("Test update - Found and deleted")
