@@ -113,7 +113,7 @@ class BlogPostServiceTest {
     }
 
     @Test
-    @DisplayName("Test update - Not Found")
+    @DisplayName("Test delete - Not Found")
     public void testDeleteCommentNotFound(){
         Long givenId = 1L;
         given(blogPostRepository.findById(givenId)).willReturn(Optional.empty());
