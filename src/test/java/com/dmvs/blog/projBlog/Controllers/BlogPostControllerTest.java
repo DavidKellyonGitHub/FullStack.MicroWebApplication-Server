@@ -227,6 +227,54 @@ class BlogPostControllerTest {
                 .andExpect(jsonPath("$.status", is("active")));
     }
 
+    @Test
+    @DisplayName("PUT /blogPost/1 - Not Found")
+    public void testUpdateBlogPostNotFound() throws Exception {
+        Long givenId = 1L;
+        BlogPost mockBlogPost1 = new BlogPost(LocalDate.of(2015, 4, 17),
+                "Matt", "This is my first post", "Read all about it", "coding", "active");
+        given(blogPostService.updatePost(givenId, mockBlogPost1)).willReturn(Optional.empty());
+
+        mockMvc.perform(put("/zcwApp/blogPost/update/{blogId}", givenId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(mockBlogPost1)))
+
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    @DisplayName("DELETE /blogPost/delete/1 - Success")
+    public void testDeleteBlogPostSuccess() throws Exception {
+        Long givenId = 1L;
+        given(blogPostService.deletePost(givenId)).willReturn(true);
+
+        mockMvc.perform(delete("/zcwApp/blogPost/delete/{blogId}", givenId))
+
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("DELETE /comment/delete/1 - Not Found")
+    public void testDeleteBlogPostNotFound() throws Exception {
+        Long givenId = 1L;
+        given(blogPostService.deletePost(givenId)).willReturn(false);
+
+        mockMvc.perform(delete("/zcwApp/blogPost/delete/{blogId}", givenId))
+
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("DELETE /comment/deleteAll/ - Success")
+    public void testDeleteAllBlogPost() throws Exception {
+        given(blogPostService.deleteAll()).willReturn(true);
+
+        mockMvc.perform(delete("/zcwApp/blogPost/deleteAll/"))
+
+                .andExpect(status().isOk());
+    }
+
 
     public static String asJsonString(final BlogPost obj) {
         try {
