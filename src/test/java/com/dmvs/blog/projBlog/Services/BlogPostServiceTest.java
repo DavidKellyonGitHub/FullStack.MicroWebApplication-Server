@@ -37,40 +37,6 @@ class BlogPostServiceTest {
     BlogPostRepository blogPostRepository;
 
     @Test
-    void findById() {
-    }
-
-    @Test
-    void findByDate() {
-    }
-
-    @Test
-    void findbyTag() {
-    }
-
-    @Test
-    void findAll() {
-    }
-
-    @Test
-    void savePost() {
-    }
-
-    @Test
-    void update() {
-    }
-
-    @Test
-    void delete() {
-    }
-
-    @Test
-    void deleteAll() {
-    }
-
-
-
-    @Test
     @DisplayName("Test findById - Found")
     public void testFindByIdFound() {
         Long givenBlogPostId = 1L;
@@ -134,30 +100,25 @@ class BlogPostServiceTest {
         assertFalse(returnBlogPost.isPresent());
     }
 
-//
-//    @Test
-//    @DisplayName("Test update - Found and deleted")
-//    public void testDeleteCommentFound() {
-//        Long givenCommentId = 1L;
-//        Comment mockComment = new Comment(givenCommentId, LocalDate.of(2015, 4, 9),
-//                "Rosalind", "I admire your writing sir.", 1, 1L, 1L);
-//        given(commentRepository.findById(givenCommentId)).willReturn(Optional.of(mockComment));
-//
-//        Boolean returnBoolean = commentService.deleteCommentById(givenCommentId);
-//
-//        verify(commentRepository, times(1)).deleteById(givenCommentId);
-//        assertTrue(returnBoolean);
-//    }
-//
-//    @Test
-//    @DisplayName("Test update - Not Found")
-//    public void testDeleteCommentNotFound(){
-//        Long givenCommentId = 1L;
-//        given(commentRepository.findById(givenCommentId)).willReturn(Optional.empty());
-//
-//        Boolean returnBoolean = commentService.deleteCommentById(givenCommentId);
-//
-//        verify(commentRepository, times(0)).deleteById(givenCommentId);
-//        assertFalse(returnBoolean);
-//    }
+
+    @Test
+    @DisplayName("Test delete - Found and deleted")
+    public void testDeleteCommentFound() {
+        Long givenId = 1L;
+        BlogPost mockPost = new BlogPost(LocalDate.now(),"Liskov", "blog title", "blog body", "blog tag", "posted");
+        given(blogPostRepository.findById(givenId)).willReturn(Optional.of(mockPost));
+        Boolean returnBoolean = blogPostService.deletePost(givenId);
+        verify(blogPostRepository, times(1)).deleteById(givenId);
+        assertTrue(returnBoolean);
+    }
+
+    @Test
+    @DisplayName("Test update - Not Found")
+    public void testDeleteCommentNotFound(){
+        Long givenId = 1L;
+        given(blogPostRepository.findById(givenId)).willReturn(Optional.empty());
+        Boolean returnBoolean = blogPostService.deletePost(givenId);
+        verify(blogPostRepository, times(0)).deleteById(givenId);
+        assertFalse(returnBoolean);
+    }
 }
