@@ -60,7 +60,7 @@ GET {{host-url}}/comment/all
 
 ###
 
-GET {{host-url}}/comment/allByUsername/?username=Moe
+GET {{host-url}}/comment/allByUserId/4
 
 ###
 
@@ -107,22 +107,14 @@ GET {{host-url}}/userAccount/3
 
 ###
 
-GET {{host-url}}/userAccount/hasUsername/?username=Von
-
-###
-
-GET {{host-url}}/userAccount/hasEmail/?email=von@gmail.com
-
-###
-
 POST {{host-url}}/userAccount/save
 Content-Type: application/json
 
 {
   "dateCreated": "2015-04-09",
-  "username": "Von",
+  "username": "test",
   "password": "testPass",
-  "email": "von@gmail.com"
+  "email": "test@gmail.com"
 }
 
 ###
@@ -139,6 +131,6 @@ Content-Type: application/json
 
 ###
 
-DELETE {{host-url}}/comment/delete/1
+DELETE {{host-url}}/userAccount/delete/5
 
 ###

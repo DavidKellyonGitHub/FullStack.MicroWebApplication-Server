@@ -34,22 +34,17 @@ public class UserAccountController {
 
     @GetMapping("/all")
     public ResponseEntity<Iterable<UserAccount>> findAllUser() {
-        return new ResponseEntity<>(userAccountService.findAllUser(), HttpStatus.OK);
-    }
-
-    @GetMapping("/hasUsername/")
-    public ResponseEntity<Boolean> doesUsernameExist(@RequestParam String username){
-        return new ResponseEntity<>(userAccountService.doesUsernameExist(username), HttpStatus.OK);
-    }
-
-    @GetMapping("/hasEmail/")
-    public ResponseEntity<Boolean> doesEmailExist(@RequestParam String email){
-        return new ResponseEntity<>(userAccountService.doesEmailExist(email), HttpStatus.OK);
+        return new ResponseEntity<>(userAccountService.findAllUsers(), HttpStatus.OK);
     }
 
     @PostMapping("/save")
     public ResponseEntity<UserAccount> saveUserAccount(@RequestBody UserAccount userAccount) {
-        UserAccount newUserAccount = userAccountService.saveUserAccount(userAccount);
+        UserAccount newUserAccount;
+        try {
+            newUserAccount = userAccountService.saveUserAccount(userAccount);
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
 
         try {
             return ResponseEntity
@@ -62,7 +57,12 @@ public class UserAccountController {
 
     @PutMapping("/update/{userId}")
     public ResponseEntity<?> updateUserAccount(@PathVariable Long userId, @RequestBody UserAccount newUserAccount) {
-        Optional<UserAccount> updatedUserAccount = userAccountService.updateUserAccount(userId, newUserAccount);
+        Optional<UserAccount> updatedUserAccount;
+        try {
+            updatedUserAccount = userAccountService.updateUserAccount(userId, newUserAccount);
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
 
         return updatedUserAccount
                 .map(userAccount -> {

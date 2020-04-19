@@ -33,6 +33,18 @@ public class UserAccount {
     public UserAccount() {
     }
 
+    public UserAccount(LocalDate dateCreated, String username, String password, String email){
+        this.dateCreated = dateCreated;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    public UserAccount(Long userId, LocalDate dateCreated, String username, String password, String email) {
+        this(dateCreated, username, password, email);
+        this.userId = userId;
+    }
+
     public Long getUserId() {
         return userId;
     }

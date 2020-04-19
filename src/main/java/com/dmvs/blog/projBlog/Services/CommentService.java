@@ -22,8 +22,8 @@ public class CommentService {
         return commentRepo.findById(commentId);
     }
 
-    public List<Comment> findAllByUsername(String username){
-        return commentRepo.findAllByUsername(username);
+    public List<Comment> findAllByUserId(Long userId){
+        return commentRepo.findAllByUserId(userId);
     }
 
     public List<Comment> findAllByBlogId(Long blogId) {

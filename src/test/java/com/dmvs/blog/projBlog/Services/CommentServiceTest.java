@@ -27,11 +27,11 @@ import static org.mockito.Mockito.verify;
 @ActiveProfiles("h2")
 public class CommentServiceTest {
 
-    @MockBean
-    CommentRepository commentRepository;
-
     @Autowired
     CommentService commentService;
+
+    @MockBean
+    CommentRepository commentRepository;
 
     @Test
     @DisplayName("Test findById - Found")
@@ -59,17 +59,52 @@ public class CommentServiceTest {
     }
 
     @Test
+    @DisplayName("Test findAllByUserId - Found")
+    public void testFindAllByUserIdFound() {
+        Long givenUserId = 2L;
+        Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
+                "Rosalind", "I admire your writing sir.", 1, 2L, givenUserId);
+        Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
+                "changed", "I admire your change sir.", 10, 1L, givenUserId);
+        List<Comment> mockCommentList = new ArrayList<>(Arrays.asList(comment1, comment2));
+        given(commentRepository.findAllByUserId(givenUserId)).willReturn(mockCommentList);
+
+        List<Comment> returnCommentList = commentService.findAllByUserId(givenUserId);
+
+        assertEquals(2, returnCommentList.size());
+        assertTrue(returnCommentList.contains(comment1));
+        assertTrue(returnCommentList.contains(comment2));
+    }
+
+    @Test
     @DisplayName("Test findAllByBlogId - Found")
     public void testFindAllByBlogIdFound() {
         Long givenBlogId = 1L;
         Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
                 "Rosalind", "I admire your writing sir.", 1, givenBlogId, 1L);
         Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
-                "changed", "I admire your change sir.", 10, givenBlogId, 1L);
+                "changed", "I admire your change sir.", 10, givenBlogId, 4L);
         List<Comment> mockCommentList = new ArrayList<>(Arrays.asList(comment1, comment2));
         given(commentRepository.findAllByBlogId(givenBlogId)).willReturn(mockCommentList);
 
         List<Comment> returnCommentList = commentService.findAllByBlogId(givenBlogId);
+
+        assertEquals(2, returnCommentList.size());
+        assertTrue(returnCommentList.contains(comment1));
+        assertTrue(returnCommentList.contains(comment2));
+    }
+
+    @Test
+    @DisplayName("Test findAll - Found")
+    public void testFindAll() {
+        Comment comment1 = new Comment(1L, LocalDate.of(2015, 4, 9),
+                "Rosalind", "I admire your writing sir.", 1, 1L, 2L);
+        Comment comment2 = new Comment(2L, LocalDate.of(2020, 5, 10),
+                "changed", "I admire your change sir.", 10, 3L, 4L);
+        List<Comment> mockCommentList = new ArrayList<>(Arrays.asList(comment1, comment2));
+        given(commentRepository.findAll()).willReturn(mockCommentList);
+
+        List<Comment> returnCommentList = commentService.findAllComments();
 
         assertEquals(2, returnCommentList.size());
         assertTrue(returnCommentList.contains(comment1));
@@ -120,9 +155,9 @@ public class CommentServiceTest {
     @DisplayName("Test update - Found and deleted")
     public void testDeleteCommentFound() {
         Long givenCommentId = 1L;
-        Comment beforeComment = new Comment(givenCommentId, LocalDate.of(2015, 4, 9),
+        Comment mockComment = new Comment(givenCommentId, LocalDate.of(2015, 4, 9),
                 "Rosalind", "I admire your writing sir.", 1, 1L, 1L);
-        given(commentRepository.findById(givenCommentId)).willReturn(Optional.of(beforeComment));
+        given(commentRepository.findById(givenCommentId)).willReturn(Optional.of(mockComment));
 
         Boolean returnBoolean = commentService.deleteCommentById(givenCommentId);
 
