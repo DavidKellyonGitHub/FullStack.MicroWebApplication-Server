@@ -32,4 +32,4 @@ build/
 *.DS_Store
 
 ###amazon credentials
-src\main\resources\application.properties
+src/main/resources/application.properties
