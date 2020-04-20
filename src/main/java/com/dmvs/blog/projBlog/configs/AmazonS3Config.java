@@ -25,17 +25,6 @@ public class AmazonS3Config {
     @Value("${cloud.aws.region.static}")
     String region;
 
-//    @Bean
-//    public AmazonS3 generateS3Client() {
-//        final AWSCredentials credentials = new BasicAWSCredentials(accessKey,accessSecret);
-//        AmazonS3 amazonS3 =  AmazonS3ClientBuilder
-//                .standard()
-//                .withRegion(region)
-//                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-//                .build();
-//        return amazonS3;
-//    }
-
     @Bean
     public AmazonS3 generateS3Client(){
         AmazonS3 amazonS3 = AmazonS3Client
