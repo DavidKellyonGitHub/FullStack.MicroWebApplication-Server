@@ -132,7 +132,7 @@ public class UserAccountControllerTest {
     public void testSaveFailUsernameOrEmailExists() throws Exception {
         UserAccount mockUser = new UserAccount(1L, LocalDate.of(2015, 4, 9),
                 "bento", "bentoPass", "bento@gmail.com");
-        given(userAccountService.saveUserAccount(mockUser)).willThrow(IllegalArgumentException.class);
+        given(userAccountService.hasUserEmail(mockUser)).willReturn(true);
 
         mockMvc.perform(post("/zcwApp/userAccount/save")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -186,7 +186,7 @@ public class UserAccountControllerTest {
         Long givenUserId = 1L;
         UserAccount updatedUser = new UserAccount(givenUserId, LocalDate.of(2015, 4, 9),
                 "bento", "bentoPass", "bento@gmail.com");
-        given(userAccountService.updateUserAccount(givenUserId, updatedUser)).willThrow(IllegalArgumentException.class);
+        given(userAccountService.hasUserEmail(updatedUser)).willReturn(true);
 
         mockMvc.perform(put("/zcwApp/userAccount/update/{userId}", givenUserId)
                 .header(HttpHeaders.IF_MATCH, 1)

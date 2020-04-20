@@ -2,7 +2,6 @@ package com.dmvs.blog.projBlog.Services;
 
 import com.dmvs.blog.projBlog.Models.UserAccount;
 import com.dmvs.blog.projBlog.Repositories.UserAccountRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -96,28 +95,6 @@ public class UserAccountServiceTest {
     }
 
     @Test
-    @DisplayName("Test save - Fail : Username exists")
-    public void testSaveFailUsernameExists(){
-        String givenUsername = "Rosalind";
-        UserAccount mockUser = new UserAccount(1L, LocalDate.of(2015, 4, 9),
-                givenUsername, "rosaPass", "rosa@gmail.com");
-        given(userAccountRepository.existsByUsername(givenUsername)).willReturn(true);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userAccountService.saveUserAccount(mockUser));
-    }
-
-    @Test
-    @DisplayName("Test save - Fail : Email exists")
-    public void testSaveFailEmailExists(){
-        String givenEmail = "rosa@gmail.com";
-        UserAccount mockUser = new UserAccount(1L, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosaPass", givenEmail);
-        given(userAccountRepository.existsByEmail(givenEmail)).willReturn(true);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userAccountService.saveUserAccount(mockUser));
-    }
-
-    @Test
     @DisplayName("Test update - Success")
     public void testUpdateSuccess(){
         Long givenUserId = 1L;
@@ -147,31 +124,7 @@ public class UserAccountServiceTest {
     }
 
     @Test
-    @DisplayName("Test update - Fail : Username exists")
-    public void testUpdateFailUsernameExists(){
-        Long givenUserId = 1L;
-        String givenUsername = "Rosalind";
-        UserAccount mockUser = new UserAccount(givenUserId, LocalDate.of(2015, 4, 9),
-                givenUsername, "rosaPass", "rosa@gmail.com");
-        given(userAccountRepository.existsByUsername(givenUsername)).willReturn(true);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userAccountService.updateUserAccount(givenUserId, mockUser));
-    }
-
-    @Test
-    @DisplayName("Test update - Fail : Email exists")
-    public void testUpdateFailEmailExists(){
-        Long givenUserId = 1L;
-        String givenEmail = "rosa@gmail.com";
-        UserAccount mockUser = new UserAccount(givenUserId, LocalDate.of(2015, 4, 9),
-                "Rosalind", "rosaPass", givenEmail);
-        given(userAccountRepository.existsByEmail(givenEmail)).willReturn(true);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userAccountService.updateUserAccount(givenUserId, mockUser));
-    }
-
-    @Test
-    @DisplayName("Test update - Found and deleted")
+    @DisplayName("Test delete - Found and deleted")
     public void testDeleteUserFound() {
         Long givenUserId = 1L;
         UserAccount mockUser = new UserAccount(givenUserId, LocalDate.of(2015, 4, 9),
@@ -185,7 +138,7 @@ public class UserAccountServiceTest {
     }
 
     @Test
-    @DisplayName("Test update - Not Found")
+    @DisplayName("Test delete - Not Found")
     public void testDeleteCommentNotFound(){
         Long givenUsesId = 1L;
         given(userAccountRepository.findById(givenUsesId)).willReturn(Optional.empty());
@@ -194,5 +147,47 @@ public class UserAccountServiceTest {
 
         verify(userAccountRepository, times(0)).deleteById(givenUsesId);
         assertFalse(returnBoolean);
+    }
+
+    @Test
+    @DisplayName("Test hasUserEmail - Username exists")
+    public void testHasUserEmailUsernameExists(){
+        Long givenUserId = 1L;
+        String givenUsername = "Rosalind";
+        String givenEmail = "rosa@gmail.com";
+        UserAccount mockUser = new UserAccount(givenUserId, LocalDate.of(2015, 4, 9),
+                givenUsername, "rosaPass", givenEmail);
+        given(userAccountRepository.existsByUsername(givenUsername)).willReturn(true);
+        given(userAccountRepository.existsByEmail(givenEmail)).willReturn(false);
+
+        assertTrue(userAccountService.hasUserEmail(mockUser));
+    }
+
+    @Test
+    @DisplayName("Test hasUserEmail - Email exists")
+    public void testHasUserEmailEmailExists(){
+        Long givenUserId = 1L;
+        String givenUsername = "Rosalind";
+        String givenEmail = "rosa@gmail.com";
+        UserAccount mockUser = new UserAccount(givenUserId, LocalDate.of(2015, 4, 9),
+                givenUsername, "rosaPass", givenEmail);
+        given(userAccountRepository.existsByUsername(givenUsername)).willReturn(false);
+        given(userAccountRepository.existsByEmail(givenEmail)).willReturn(true);
+
+        assertTrue(userAccountService.hasUserEmail(mockUser));
+    }
+
+    @Test
+    @DisplayName("Test hasUserEmail - UsernameEmail does not Exist")
+    public void testHasUserEmailNoneExists(){
+        Long givenUserId = 1L;
+        String givenUsername = "Rosalind";
+        String givenEmail = "rosa@gmail.com";
+        UserAccount mockUser = new UserAccount(givenUserId, LocalDate.of(2015, 4, 9),
+                givenUsername, "rosaPass", givenEmail);
+        given(userAccountRepository.existsByUsername(givenUsername)).willReturn(false);
+        given(userAccountRepository.existsByEmail(givenEmail)).willReturn(false);
+
+        assertFalse(userAccountService.hasUserEmail(mockUser));
     }
 }
