@@ -34,6 +34,11 @@ public class BlogPostController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/allByUser/{username}")
+    public ResponseEntity<List<BlogPost>> findAllByUser(@PathVariable String username){
+        return new ResponseEntity<>(blogPostService.findAllByUsername(username), HttpStatus.OK);
+    }
+
     @GetMapping("/allByTag/")
     public ResponseEntity<List<BlogPost>> findByTag(@RequestParam String tag){
         return new ResponseEntity<>(blogPostService.findByTag(tag), HttpStatus.OK);

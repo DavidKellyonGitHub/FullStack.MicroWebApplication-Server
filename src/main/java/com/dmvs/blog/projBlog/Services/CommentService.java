@@ -55,4 +55,13 @@ public class CommentService {
         }
         return false;
     }
+
+    public Optional<Comment> findAndIncreaseLike(Long commentId){
+        Optional<Comment> currentComment = findById(commentId);
+        if(currentComment.isPresent()){
+            currentComment.get().setLikes(currentComment.get().getLikes() + 1);
+            commentRepo.save(currentComment.get());
+        }
+        return currentComment;
+    }
 }

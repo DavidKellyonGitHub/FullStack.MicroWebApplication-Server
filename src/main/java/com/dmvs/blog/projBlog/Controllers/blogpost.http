@@ -8,6 +8,14 @@ GET {{host-url}}/blogPost/1
 
 ###
 
+GET {{host-url}}/blogPost/allByUser/Von
+
+###
+
+GET {{host-url}}/blogPost/allByUser/Moe
+
+###
+
 GET {{host-url}}/blogPost/allByTag/?tag=Money
 
 ###
@@ -25,7 +33,14 @@ Content-Type: application/json
   "title": "testTitle",
   "body": "testBody",
   "tag": "test",
-  "status": "posted"
+  "status": "posted",
+  "userAccount": {
+    "userId": 3,
+    "dateCreated": "2015-04-09",
+    "username": "Von",
+    "password": "vonPass",
+    "email": "von@gmail.com"
+  }
 }
 
 ###
@@ -72,6 +87,10 @@ GET {{host-url}}/comment/1
 
 ###
 
+GET {{host-url}}/comment/+likes/1
+
+###
+
 POST {{host-url}}/comment/save
 Content-Type: application/json
 
@@ -104,6 +123,10 @@ GET {{host-url}}/userAccount/all
 ###
 
 GET {{host-url}}/userAccount/3
+
+###
+
+GET {{host-url}}/userAccount/login?username=Von&password=vonPass
 
 ###
 
