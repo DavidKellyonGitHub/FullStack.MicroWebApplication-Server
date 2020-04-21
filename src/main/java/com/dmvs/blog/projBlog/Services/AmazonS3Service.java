@@ -4,16 +4,14 @@ import com.amazonaws.auth.*;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.Region;
+import com.amazonaws.services.s3.model.*;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -59,8 +57,8 @@ public class AmazonS3Service {
 
     private void uploadFileToBucket(String bucketName, File file) {
         String uniqueFileName = LocalDate.now() + "_" + file.getName();
-        PutObjectRequest object = new PutObjectRequest(this.bucketName, uniqueFileName, file);
-        amazonS3.putObject(object);
+        amazonS3.putObject(new PutObjectRequest(this.bucketName, uniqueFileName, file)
+                .withCannedAcl(CannedAccessControlList.PublicReadWrite));
     }
 
     public String deleteFileFromBucket(String fileName) {

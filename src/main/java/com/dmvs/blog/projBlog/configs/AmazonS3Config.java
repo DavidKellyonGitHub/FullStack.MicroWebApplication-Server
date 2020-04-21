@@ -5,6 +5,7 @@ import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Builder;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,21 +25,11 @@ public class AmazonS3Config {
     @Value("${cloud.aws.region.static}")
     String region;
 
-//    @Bean
-//    public AmazonS3 generateS3Client() {
-//        final AWSCredentials credentials = new BasicAWSCredentials(accessKey,accessSecret);
-//        AmazonS3 amazonS3 =  AmazonS3ClientBuilder
-//                .standard()
-//                .withRegion(region)
-//                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-//                .build();
-//        return amazonS3;
-//    }
-
     @Bean
-    public S3Client generateS3Client(){
-        S3Client amazonS3 = S3Client.builder()
-                .region(Region.US_EAST_2)
+    public AmazonS3 generateS3Client(){
+        AmazonS3 amazonS3 = AmazonS3Client
+                .builder()
+                .withRegion(region)
                 .build();
         return amazonS3;
     }
