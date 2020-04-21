@@ -32,6 +32,15 @@ public class UserAccountController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/login")
+    public ResponseEntity<?> findByUserPass(@RequestParam String username, @RequestParam String password){
+        return userAccountService.findByUserPass(username, password)
+                .map(userAccount -> ResponseEntity
+                        .ok()
+                        .body(userAccount))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/all")
     public ResponseEntity<Iterable<UserAccount>> findAllUser() {
         return new ResponseEntity<>(userAccountService.findAllUsers(), HttpStatus.OK);
@@ -39,12 +48,9 @@ public class UserAccountController {
 
     @PostMapping("/save")
     public ResponseEntity<UserAccount> saveUserAccount(@RequestBody UserAccount userAccount) {
-        UserAccount newUserAccount;
-        try {
-            newUserAccount = userAccountService.saveUserAccount(userAccount);
-        } catch (IllegalArgumentException e){
+        if(userAccountService.hasUserEmail(userAccount))
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+        UserAccount newUserAccount = userAccountService.saveUserAccount(userAccount);
 
         try {
             return ResponseEntity
@@ -57,12 +63,9 @@ public class UserAccountController {
 
     @PutMapping("/update/{userId}")
     public ResponseEntity<?> updateUserAccount(@PathVariable Long userId, @RequestBody UserAccount newUserAccount) {
-        Optional<UserAccount> updatedUserAccount;
-        try {
-            updatedUserAccount = userAccountService.updateUserAccount(userId, newUserAccount);
-        } catch (IllegalArgumentException e){
+        if(userAccountService.hasUserEmail(newUserAccount))
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+        Optional<UserAccount> updatedUserAccount = userAccountService.updateUserAccount(userId, newUserAccount);
 
         return updatedUserAccount
                 .map(userAccount -> {

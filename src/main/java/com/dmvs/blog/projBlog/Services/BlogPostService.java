@@ -23,6 +23,10 @@ public class BlogPostService {
         return blogRepo.findById(blogId);
     }
 
+    public List<BlogPost> findAllByUsername(String username){
+        return blogRepo.findAllByUsername(username);
+    }
+
     public List<BlogPost> findByTag(String tag) {
         return blogRepo.findAllByTag(tag);
     }
