@@ -22,6 +22,10 @@ public class UserAccountService {
         return userAccountRepo.findById(userId);
     }
 
+    public Optional<UserAccount> findByUserPass(String username, String password){
+        return userAccountRepo.findByUsernameAndPassword(username, password);
+    }
+
     public List<UserAccount> findAllUsers(){
         return userAccountRepo.findAll();
     }

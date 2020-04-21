@@ -47,6 +47,15 @@ public class CommentController {
         return new ResponseEntity<>(commentService.findAllComments(), HttpStatus.OK);
     }
 
+    @GetMapping("/+likes/{commentId}")
+    public ResponseEntity<?> findAndIncreaseLike(@PathVariable Long commentId){
+        return commentService.findAndIncreaseLike(commentId)
+                .map(comment -> ResponseEntity
+                        .ok()
+                        .body(comment))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping("/save")
     public ResponseEntity<Comment> saveComment(@RequestBody Comment comment) {
         Comment newComment = commentService.saveComment(comment);

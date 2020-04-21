@@ -13,4 +13,6 @@ public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {
     List<BlogPost> findAllByDateCreatedAfter(LocalDate date);
 
     List<BlogPost> findAllByTag(String tag);
+
+    List<BlogPost> findAllByUsername(String username);
 }

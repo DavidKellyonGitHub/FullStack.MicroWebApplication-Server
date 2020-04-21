@@ -32,6 +32,15 @@ public class UserAccountController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/login")
+    public ResponseEntity<?> findByUserPass(@RequestParam String username, @RequestParam String password){
+        return userAccountService.findByUserPass(username, password)
+                .map(userAccount -> ResponseEntity
+                        .ok()
+                        .body(userAccount))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/all")
     public ResponseEntity<Iterable<UserAccount>> findAllUser() {
         return new ResponseEntity<>(userAccountService.findAllUsers(), HttpStatus.OK);
