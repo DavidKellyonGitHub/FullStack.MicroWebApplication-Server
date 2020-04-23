@@ -176,4 +176,31 @@ public class CommentServiceTest {
         verify(commentRepository, times(0)).deleteById(givenCommentId);
         assertFalse(returnBoolean);
     }
+
+    @Test
+    @DisplayName("Test LikeIncrease - Success")
+    public void testIncreaseLikeSuccess(){
+        Long givenCommentId = 1L;
+        Comment mockComment = new Comment(givenCommentId, LocalDate.of(2015, 4, 9),
+                "Rosalind", "I admire your writing sir.", 1, 1L, 1L);
+        Comment updateComment = new Comment(givenCommentId, LocalDate.of(2015, 4, 9),
+                "Rosalind", "I admire your writing sir.", 2, 1L, 1L);
+        given(commentRepository.findById(givenCommentId)).willReturn(Optional.of(mockComment));
+        given(commentRepository.save(updateComment)).willReturn(updateComment);
+
+        Optional<Comment> returnComment = commentService.findAndIncreaseLike(givenCommentId);
+
+        assertSame(2, returnComment.get().getLikes());
+    }
+
+    @Test
+    @DisplayName("Test LikeIncrease - Not Found")
+    public void testIncreaseLikeNotFound() {
+        Long givenCommentId = 1L;
+        given(commentRepository.findById(givenCommentId)).willReturn(Optional.empty());
+
+        Optional<Comment> returnComment = commentService.findAndIncreaseLike(givenCommentId);
+
+        assertFalse(returnComment.isPresent());
+    }
 }
