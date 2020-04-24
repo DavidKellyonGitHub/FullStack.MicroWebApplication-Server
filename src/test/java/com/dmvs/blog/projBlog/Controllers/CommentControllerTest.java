@@ -154,6 +154,38 @@ public class CommentControllerTest {
     }
 
     @Test
+    @DisplayName("GET /comment/+likes/1 - Found")
+    public void testFindAndIncreaseLikesFound() throws Exception {
+        Long givenCommentId = 1L;
+        Comment getComment = new Comment(1L, LocalDate.of(2015, 4, 9),
+                "Rosalind", "I admire your writing sir.", 2, 1L, 1L);
+        given(commentService.findAndIncreaseLike(givenCommentId)).willReturn(Optional.of(getComment));
+
+        mockMvc.perform(get("/zcwApp/comment/+likes/{commentId}", givenCommentId))
+
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+
+                .andExpect(jsonPath("$.commentId", is(1)))
+                .andExpect(jsonPath("$.dateCreated", is("2015-04-09")))
+                .andExpect(jsonPath("$.username", is("Rosalind")))
+                .andExpect(jsonPath("$.text", is("I admire your writing sir.")))
+                .andExpect(jsonPath("$.likes", is(2)))
+                .andExpect(jsonPath("$.blogId", is(1)))
+                .andExpect(jsonPath("$.userId", is(1)));
+    }
+
+    @Test
+    @DisplayName("GET /comment/+likes/1 - Not Found")
+    public void testFindAndIncreaseLikesNotFound() throws Exception {
+        given(commentService.findAndIncreaseLike(1L)).willReturn(Optional.empty());
+
+        mockMvc.perform(get("/zcwApp/comment/+likes/{commentId}", 1L))
+
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @DisplayName("POST /comment - Success")
     public void testSaveCommentSuccess() throws Exception {
         Comment postComment = new Comment(LocalDate.of(2015, 4, 9),

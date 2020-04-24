@@ -59,6 +59,33 @@ public class UserAccountServiceTest {
     }
 
     @Test
+    @DisplayName("Test findByUserPass - Found")
+    public void testFindByUserPassFound(){
+        String giveUsername = "Rosalind";
+        String givenPassword = "rosaPass";
+        UserAccount mockUser = new UserAccount(1L, LocalDate.of(2015, 4, 9),
+                giveUsername, givenPassword, "rosa@gmail.com");
+        given(userAccountRepository.findByUsernameAndPassword(giveUsername, givenPassword)).willReturn(Optional.of(mockUser));
+
+        Optional<UserAccount> returnUserAccount = userAccountService.findByUserPass(giveUsername, givenPassword);
+
+        assertTrue(returnUserAccount.isPresent());
+        assertSame(returnUserAccount.get(), mockUser);
+    }
+
+    @Test
+    @DisplayName("Test findByUserPass - Not Found")
+    public void testFindByUserPassNotFound() {
+        String giveUsername = "Rosalind";
+        String givenPassword = "rosaPass";
+        given(userAccountRepository.findByUsernameAndPassword(giveUsername, givenPassword)).willReturn(Optional.empty());
+
+        Optional<UserAccount> returnUserAccount = userAccountService.findByUserPass(giveUsername, givenPassword);
+
+        assertFalse(returnUserAccount.isPresent());
+    }
+
+    @Test
     @DisplayName("Test findAllUsers - Found")
     public void testFindAllUsers(){
         UserAccount user1 = new UserAccount(1L, LocalDate.of(2015, 4, 9),

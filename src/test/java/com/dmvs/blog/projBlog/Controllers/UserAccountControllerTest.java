@@ -69,6 +69,43 @@ public class UserAccountControllerTest {
     }
 
     @Test
+    @DisplayName("GET /userAccount/login - Found")
+    public void testFindByUserPassFound() throws Exception {
+        String givenUsername = "Rosalind";
+        String givenPassword = "rosaPass";
+        UserAccount mockUser = new UserAccount(1L, LocalDate.of(2015, 4, 9),
+                givenUsername, givenPassword, "rosa@gmail.com");
+        given(userAccountService.findByUserPass(givenUsername, givenPassword)).willReturn(Optional.of(mockUser));
+
+        mockMvc.perform(get("/zcwApp/userAccount/login")
+                .param("username", givenUsername)
+                .param("password", givenPassword))
+
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+
+                .andExpect(jsonPath("$.userId", is(1)))
+                .andExpect(jsonPath("$.dateCreated", is("2015-04-09")))
+                .andExpect(jsonPath("$.username", is("Rosalind")))
+                .andExpect(jsonPath("$.password", is("rosaPass")))
+                .andExpect(jsonPath("$.email", is("rosa@gmail.com")));
+    }
+
+    @Test
+    @DisplayName("GET /userAccount/login - Not Found")
+    public void testFindByUserPassNotFound() throws Exception {
+        String givenUsername = "Rosalind";
+        String givenPassword = "rosaPass";
+        given(userAccountService.findByUserPass(givenUsername, givenPassword)).willReturn(Optional.empty());
+
+        mockMvc.perform(get("/zcwApp/userAccount/login")
+                .param("username", givenUsername)
+                .param("password", givenPassword))
+
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @DisplayName("GET /userAccount/all - Found")
     public void testFindAllUsers() throws Exception {
         UserAccount user1 = new UserAccount(1L, LocalDate.of(2015, 4, 9),
