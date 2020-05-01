@@ -28,6 +28,7 @@ POST {{host-url}}/blogPost/save
 Content-Type: application/json
 
 {
+  "blogId": null,
   "dateCreated": "2020-01-01",
   "username": "Von",
   "title": "testTitle",
